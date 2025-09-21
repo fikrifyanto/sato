@@ -1,0 +1,36 @@
+services:
+    app:
+        build: .
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/app
+        environment:
+            DB_CONNECTION: pgsql
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_DATABASE: sato
+            DB_USERNAME: sato
+            DB_PASSWORD: sato
+        depends_on:
+            - db
+        command: >
+            sh -c "
+                php artisan migrate --force &&
+                php artisan octane:frankenphp --host=0.0.0.0 --port=8080
+            "
+
+    db:
+        image: postgres:15
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: sato
+            POSTGRES_USER: sato
+            POSTGRES_PASSWORD: sato
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:
