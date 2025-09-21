@@ -7,6 +7,38 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Prerequisites
+- Composer
+- PostgreSQL 15
+- PHP ^8.2
+- Node ^18
+- NPM
+
+## Installation
+
+### Docker
+1. Clone the repository
+2. Run `docker-compose up -d`
+3. Open `http://localhost:8000` in your browser
+
+### Local
+1. Clone the repository
+2. Run `composer install`
+3. Run `cp .env.example .env`
+4. Configure `.env` file
+5. Run `php artisan key:generate`
+6. Run `php artisan migrate`
+7. Run `npm install && npm run build`
+8. Run `composer run dev`
+9. Open `http://localhost:8000` in your browser
+
+## Panel
+Customer: `http://localhost:8000`
+Admin: `http://localhost:8000/admin`
+Courier: `http://localhost:8000/courier`
+Seller: `http://localhost:8000/seller`
+Vet: `http://localhost:8000/vet`
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

@@ -16,10 +16,20 @@ services:
             - db
         command: >
             sh -c "
+                php artisan key:generate &&
                 php artisan migrate --force &&
                 php artisan filament:assets &&
                 php artisan octane:frankenphp
             "
+
+    node:
+        image: node:22-alpine
+        working_dir: /app
+        volumes:
+            - .:/app
+        command: sh -c "npm install && npm run dev -- --host"
+        ports:
+            - "5173:5173"
 
     db:
         image: postgres:15

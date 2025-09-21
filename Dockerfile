@@ -1,10 +1,10 @@
-# Gunakan image FrankenPHP resmi
+# User FrankenPHP image
 FROM dunglas/frankenphp:latest
 
 # Set working directory
 WORKDIR /app
 
-# Copy seluruh project
+# Copy all project file
 COPY . /app
 
 # Install PHP extensions
@@ -26,8 +26,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install dependencies
 RUN composer install
 
-# Pastikan permission storage & bootstrap/cache
+# Permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Expose port FrankenPHP
+# Expose port
 EXPOSE 8000
