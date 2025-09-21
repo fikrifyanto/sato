@@ -30,4 +30,4 @@ RUN composer install
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Expose port FrankenPHP
-EXPOSE 8080
+EXPOSE 8000
