@@ -33,11 +33,11 @@
 9. Open `http://localhost:8000` in your browser
 
 ## Panel
-Customer: `http://localhost:8000`
-Admin: `http://localhost:8000/admin`
-Courier: `http://localhost:8000/courier`
-Seller: `http://localhost:8000/seller`
-Vet: `http://localhost:8000/vet`
+Customer: `http://localhost:8000`<br/>
+Admin: `http://localhost:8000/admin`<br/>
+Courier: `http://localhost:8000/courier`<br/>
+Seller: `http://localhost:8000/seller`<br/>
+Vet: `http://localhost:8000/vet`<br/>
 
 ## About Laravel
 
