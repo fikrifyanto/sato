@@ -18,8 +18,9 @@
 
 ### Docker
 1. Clone the repository
-2. Run `docker-compose up -d`
-3. Open `http://localhost:8000` in your browser
+2. Run `cp .env.example .env`
+3. Run `docker-compose up -d`
+4. Open `http://localhost:8000` in your browser
 
 ### Local
 1. Clone the repository
