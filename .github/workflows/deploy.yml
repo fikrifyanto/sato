@@ -30,6 +30,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo mkdir -p /var/www/sato
+            sudo chown -R $USER:$USER /var/www/sato
             cd /var/www
 
             mkdir -p ~/.ssh
