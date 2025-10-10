@@ -1,0 +1,35 @@
+services:
+  app:
+    image: ghcr.io/fikrifyanto/sato:latest
+    container_name: sato_app
+    env_file:
+      - .env.production
+    ports:
+      - "80:8000"
+    depends_on:
+      - db
+    restart: unless-stopped
+    command: >
+      sh -c "
+        php artisan migrate --force &&
+        php artisan filament:assets &&
+        php artisan octane:frankenphp
+      "
+
+  db:
+    image: postgres:15
+    container_name: sato_db
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${DB_USERNAME} -d $${DB_DATABASE}"]
+      interval: 10s
+      retries: 5
+
+volumes:
+  postgres_data:

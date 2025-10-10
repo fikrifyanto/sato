@@ -29,38 +29,43 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/sato || mkdir -p /var/www/sato && cd /var/www/sato
+            cd /var/www
 
-            # Create .env file
-            cat > .env.production <<EOL
-            APP_NAME=Laravel
-            APP_ENV=${{ secrets.APP_ENV }}
-            APP_KEY=${{ secrets.APP_KEY }}
-            APP_DEBUG=false
-            APP_URL=${{ secrets.APP_URL }}
-
-            LOG_CHANNEL=stack
-
-            DB_CONNECTION=${{ secrets.DB_CONNECTION }}
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_PORT=${{ secrets.DB_PORT }}
-            DB_DATABASE=${{ secrets.DB_DATABASE }}
-            DB_USERNAME=${{ secrets.DB_USERNAME }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            EOL
-
-            # Stop old container if exists
-            if [ $(docker ps -q -f name=sato) ]; then
-              docker stop sato
-              docker rm sato
+            # Clone repo sato
+            if [ ! -d "sato/.git" ]; then
+              git clone git@github.com:${{ github.repository_owner }}/sato.git
             fi
 
-            # Run new container
-            docker run -d \
-              --name sato \
-              --env-file .env.production \
-              -p 80:9000 \
-              ghcr.io/${{ github.repository_owner }}/sato:latest
+            # Enter folder sato
+            cd sato
 
-            # Cleans up unused images
+            # Reset branch main
+            git fetch --all
+            git reset --hard origin/main
+
+            # Create .env.production
+            cat > .env.production <<EOL
+              APP_NAME=Laravel
+              APP_ENV=${{ secrets.APP_ENV }}
+              APP_KEY=${{ secrets.APP_KEY }}
+              APP_DEBUG=false
+              APP_URL=${{ secrets.APP_URL }}
+
+              DB_CONNECTION=${{ secrets.DB_CONNECTION }}
+              DB_HOST=${{ secrets.DB_HOST }}
+              DB_PORT=${{ secrets.DB_PORT }}
+              DB_DATABASE=${{ secrets.DB_DATABASE }}
+              DB_USERNAME=${{ secrets.DB_USERNAME }}
+              DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+
+              CACHE_DRIVER=file
+              QUEUE_CONNECTION=database
+              SESSION_DRIVER=file
+            EOL
+
+            # Pull latest image
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+
+            # Clear docker images
             docker image prune -f
