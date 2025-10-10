@@ -1,0 +1,66 @@
+name: Deploy Laravel to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/sato:latest
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/sato || mkdir -p /var/www/sato && cd /var/www/sato
+
+            # Create .env file
+            cat > .env.production <<EOL
+            APP_NAME=Laravel
+            APP_ENV=${{ secrets.APP_ENV }}
+            APP_KEY=${{ secrets.APP_KEY }}
+            APP_DEBUG=false
+            APP_URL=${{ secrets.APP_URL }}
+
+            LOG_CHANNEL=stack
+
+            DB_CONNECTION=${{ secrets.DB_CONNECTION }}
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_PORT=${{ secrets.DB_PORT }}
+            DB_DATABASE=${{ secrets.DB_DATABASE }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            EOL
+
+            # Stop old container if exists
+            if [ $(docker ps -q -f name=sato) ]; then
+              docker stop sato
+              docker rm sato
+            fi
+
+            # Run new container
+            docker run -d \
+              --name sato \
+              --env-file .env.production \
+              -p 80:9000 \
+              ghcr.io/${{ github.repository_owner }}/sato:latest
+
+            # Cleans up unused images
+            docker image prune -f
