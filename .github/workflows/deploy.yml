@@ -63,6 +63,10 @@ jobs:
               DB_USERNAME=${{ secrets.DB_USERNAME }}
               DB_PASSWORD=${{ secrets.DB_PASSWORD }}
 
+              POSTGRES_DB=${{ secrets.DB_DATABASE }}
+              POSTGRES_USER${{ secrets.DB_USERNAME }}
+              POSTGRES_PASSWORD${{ secrets.DB_PASSWORD }}
+
               CACHE_DRIVER=file
               QUEUE_CONNECTION=database
               SESSION_DRIVER=file
