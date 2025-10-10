@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo mkdir -p /var/www
+            sudo mkdir -p /var/www/sato
             cd /var/www
 
             mkdir -p ~/.ssh
