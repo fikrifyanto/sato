@@ -38,7 +38,7 @@ jobs:
 
             # Clone repo sato
             if [ ! -d "sato/.git" ]; then
-              git clone ${{ github.repository_owner }}:${{ secrets.GHCR_TOKEN }}@github.com:${{ github.repository }}.git
+              git clone https://x-access-token:${{ secrets.GHCR_TOKEN }}@github.com:${{ github.repository }}.git
             fi
 
             # Enter folder sato
