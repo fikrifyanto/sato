@@ -60,6 +60,10 @@ return [
             'driver' => 'session',
             'provider' => 'vets',
         ],
+        'member' => [
+            'driver' => 'session',
+            'provider' => 'members',
+        ],
     ],
 
     /*
@@ -103,6 +107,10 @@ return [
         'vets' => [
             'driver' => 'eloquent',
             'model' => App\Models\Vet::class,
+        ],
+        'members' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Member::class,
         ],
     ],
 
