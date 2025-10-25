@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-white shadow rounded p-6">
         <h1 class="text-2xl font-bold mb-2">Halo, {{ Auth::guard('member')->user()->name }} 👋</h1>
-        <p class="text-gray-600">Selamat datang di aplikasi Sato.</p>
+        <p class="text-gray-600">Selamat datang di aplikasi Sato</p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-4 mt-6">
