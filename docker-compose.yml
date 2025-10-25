@@ -21,6 +21,11 @@ services:
                 php artisan filament:assets &&
                 php artisan octane:frankenphp
             "
+        healthcheck:
+            test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
 
     node:
         image: node:22-alpine
