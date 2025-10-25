@@ -5,13 +5,6 @@ services:
             - "8000:8000"
         volumes:
             - .:/app
-        environment:
-            DB_CONNECTION: pgsql
-            DB_HOST: db
-            DB_PORT: 5432
-            DB_DATABASE: sato
-            DB_USERNAME: sato
-            DB_PASSWORD: sato
         depends_on:
             - db
         command: >
@@ -19,7 +12,7 @@ services:
                 php artisan key:generate &&
                 php artisan migrate --force &&
                 php artisan filament:assets &&
-                php artisan octane:frankenphp
+                php -S 0.0.0.0:8000 -t public
             "
 
     node:
