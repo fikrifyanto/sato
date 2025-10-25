@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ $title ?? 'Member Auth' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/app-logo.png') }}">
     @vite('resources/css/app.css')
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gray-200">
