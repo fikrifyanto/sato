@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
-            $table->string('image')->nullable();
+            $table->json('images');
             $table->string('name');
-            $table->string('species');
+            $table->string('species')->nullable();
             $table->string('breed')->nullable();
             $table->integer('age')->nullable();
             $table->string('gender')->nullable();
             $table->string('color')->nullable();
-            $table->decimal('weight', 5, 2)->nullable();
+            $table->decimal('weight', 5)->nullable();
             $table->text('description')->nullable();
-            $table->string('status')->default('available');
+            $table->enum('status', ['available', 'adopted'])->default('available');
             $table->boolean('vaccinated')->default(false);
-            $table->decimal('price', 10, 2)->nullable();
+            $table->decimal('price', 10)->nullable();
             $table->timestamps();
         });
     }

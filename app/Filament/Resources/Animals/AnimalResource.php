@@ -29,11 +29,6 @@ class AnimalResource extends Resource
         return AnimalForm::configure($schema);
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return AnimalInfolist::configure($schema);
-    }
-
     public static function table(Table $table): Table
     {
         return AnimalsTable::configure($table);

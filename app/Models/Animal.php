@@ -10,7 +10,7 @@ class Animal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'image',
+        'images',
         'name',
         'species',
         'breed',
@@ -22,5 +22,10 @@ class Animal extends Model
         'status',
         'vaccinated',
         'price',
+    ];
+
+    protected $casts = [
+        'vaccinated' => 'boolean',
+        'images' => 'array',
     ];
 }

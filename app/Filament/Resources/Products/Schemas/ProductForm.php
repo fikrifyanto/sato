@@ -1,32 +1,36 @@
 <?php
 
-namespace App\Filament\Resources\Produks\Schemas;
+namespace App\Filament\Resources\Products\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Support\RawJs;
 
-class ProdukForm
+class ProductForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('product_name')
+                TextInput::make('name')
                     ->required(),
-                Textarea::make('description')
-                    ->columnSpanFull(),
                 TextInput::make('price')
                     ->required()
-                    ->numeric()
-                    ->prefix('$'),
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters([','])
+                    ->prefix('IDR'),
                 TextInput::make('stock')
                     ->required()
                     ->numeric(),
                 TextInput::make('category'),
                 FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                    ->columnSpanFull(),
+                RichEditor::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 }

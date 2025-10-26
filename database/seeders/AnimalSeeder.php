@@ -20,7 +20,7 @@ class AnimalSeeder extends Seeder
             'breed' => 'Persia',
             'vaccinated' => true,
             'color' => 'Putih',
-            'weight' => '3kg',
+            'weight' => 3,
         ]);
     }
 }

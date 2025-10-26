@@ -25,22 +25,25 @@ class AnimalsTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('gender')
-                    ->searchable(),
-                ImageColumn::make('image'),
-                TextColumn::make('status')
-                    ->searchable(),
-                TextColumn::make('price')
-                    ->money()
-                    ->sortable(),
+                    ->searchable()
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => ucfirst($state)),
                 TextColumn::make('breed')
                     ->searchable(),
-                IconColumn::make('vaccinated')
-                    ->boolean(),
                 TextColumn::make('color')
                     ->searchable(),
                 TextColumn::make('weight')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('price')
+                    ->money('IDR')
+                    ->sortable(),
+                IconColumn::make('vaccinated')
+                    ->boolean(),
+                TextColumn::make('status')
+                    ->formatStateUsing(fn ($state) => ucfirst($state))
+                    ->badge()
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

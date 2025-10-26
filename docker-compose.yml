@@ -12,7 +12,7 @@ services:
                 php artisan key:generate &&
                 php artisan migrate --force &&
                 php artisan filament:assets &&
-                php -S 0.0.0.0:8000 -t public
+                php artisan serve --host 0.0.0.0
             "
         healthcheck:
             test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]

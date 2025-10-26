@@ -7,14 +7,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ProdukSeeder extends Seeder
+class ProductSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('produks')->insert([
+        DB::table('products')->insert([
             [
                 'product_name' => 'Makanan Kucing Whiskas',
                 'description' => 'Makanan bergizi tinggi untuk kucing dewasa dengan rasa tuna.',
