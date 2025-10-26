@@ -1,5 +1,5 @@
-# Base image PHP 8.3 (CLI + FPM)
-FROM php:8.3-cli
+# User FrankenPHP image
+FROM dunglas/frankenphp:latest
 
 # Set working directory
 WORKDIR /app
