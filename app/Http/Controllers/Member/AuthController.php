@@ -3,46 +3,94 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Member;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function showLogin() {
+    public function showLogin()
+    {
         return view('member.auth.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'email'    => 'required|email',
+            'password' => 'required|min:6',
+        ], [
+            'email.required'    => 'Email wajib diisi.',
+            'email.email'       => 'Format email tidak valid.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min'      => 'Password minimal 6 karakter.',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $credentials = $request->only('email', 'password');
 
+        // Coba login
         if (Auth::guard('member')->attempt($credentials)) {
             return redirect()->route('member.dashboard');
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah']);
+        // Jika gagal login
+        return back()
+            ->withErrors(['email' => 'Email atau password salah'])
+            ->withInput();
     }
 
-    public function showRegister() {
+    public function showRegister()
+    {
         return view('member.auth.register');
     }
 
-    public function register(Request $request) {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:members',
-            'password' => 'required|min:6|confirmed',
+    public function register(Request $request)
+    {
+        // Validasi input registrasi
+        $validator = Validator::make($request->all(), [
+            'name'                  => 'required|string|max:100',
+            'email'                 => 'required|email|unique:customers,email',
+            'password'              => 'required|min:6|confirmed',
+            'password_confirmation' => 'required'
+        ], [
+            'name.required'                  => 'Nama wajib diisi.',
+            'email.required'                 => 'Email wajib diisi.',
+            'email.email'                    => 'Format email tidak valid.',
+            'email.unique'                   => 'Email sudah digunakan.',
+            'password.required'              => 'Password wajib diisi.',
+            'password.min'                   => 'Password minimal 6 karakter.',
+            'password.confirmed'             => 'Konfirmasi password tidak cocok.',
+            'password_confirmation.required' => 'Konfirmasi password wajib diisi.',
         ]);
 
-        $data['password'] = bcrypt($data['password']);
-        $member = Member::create($data);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
+        // Simpan data ke database
+        $data = $request->only('name', 'email', 'password');
+        $data['password'] = bcrypt($data['password']);
+
+        $member = Customer::create($data);
+
+        // Login otomatis
         Auth::guard('member')->login($member);
 
         return redirect()->route('member.dashboard');
     }
 
-    public function logout() {
+    public function logout()
+    {
         Auth::guard('member')->logout();
         return redirect()->route('member.login');
     }
