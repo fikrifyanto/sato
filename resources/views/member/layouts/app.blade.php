@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>{{ $title ?? 'Member Area' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/app-logo.png') }}">
     @vite('resources/css/app.css')
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
@@ -20,15 +21,14 @@
                 {{-- KIRI: Logo dan Menu --}}
                 <div class="flex items-center space-x-8">
                     <a href="{{ route('member.dashboard') }}" class="flex items-center">
-                        <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                            alt="Logo" class="h-8 w-auto">
+                        <img src="{{ asset('images/app-logo.png') }}" alt="Logo" class="h-8 w-auto">
                         <span class="ml-2 text-gray-800 font-semibold text-lg">Member Area</span>
                     </a>
 
                     {{-- Menu --}}
                     <div class="hidden md:flex space-x-4">
                         <a href="{{ route('member.dashboard') }}"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50">Dashboard</a>
+                            class="rounded-md px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50">Home</a>
                         <a href="#"
                             class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">Projects</a>
                         <a href="#"
@@ -107,9 +107,20 @@
     </nav>
 
     {{-- MAIN CONTENT --}}
-    <main class="flex-1 p-6 text-gray-800 bg-gray-200 min-h-screen">
-        @yield('content')
+    <main class="flex-1 p-6 text-gray-800 bg-gray-200">
+        <div class="container mx-auto">
+            @yield('content')
+        </div>
     </main>
+
+    <footer class="bg-gray-100 border-t border-gray-200 mt-8">
+        <div class="max-w-7xl mx-auto px-4 py-4 text-center text-gray-600 text-sm">
+            © {{ date('Y') }} Sato. All rights reserved.
+        </div>
+    </footer>
+
+
+    @yield('scripts')
 
 </body>
 
