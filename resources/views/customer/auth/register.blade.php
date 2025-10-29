@@ -1,4 +1,4 @@
-@extends('member.layouts.auth')
+@extends('customer.layouts.auth')
 
 @section('content')
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -11,7 +11,7 @@
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="{{ route('member.register') }}" method="POST" class="space-y-6">
+            <form action="{{ route('customer.register') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
@@ -58,15 +58,15 @@
             </form>
 
             <p class="mt-10 text-center text-sm text-gray-600">
-                Already a member?
-                <a href="{{ route('member.login') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign
+                Already a customer?
+                <a href="{{ route('customer.login') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign
                     In</a>
             </p>
         </div>
     </div>
 {{-- <div class="max-w-md mx-auto bg-white shadow p-6 rounded">
-    <h2 class="text-xl font-bold mb-4">Register Member</h2>
-    <form method="POST" action="{{ route('member.register') }}">
+    <h2 class="text-xl font-bold mb-4">Register Customer</h2>
+    <form method="POST" action="{{ route('customer.register') }}">
         @csrf
         <input type="text" name="name" placeholder="Nama Lengkap" class="border w-full p-2 mb-3 rounded">
         <input type="email" name="email" placeholder="Email" class="border w-full p-2 mb-3 rounded">

@@ -4,12 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    if (Auth::guard('member')->check()) {
-        return redirect()->route('member.dashboard');
+    if (Auth::guard('customer')->check()) {
+        return redirect()->route('customer.dashboard');
     }
-    return redirect()->route('member.login');
+    return redirect()->route('customer.login');
 });
 
-require __DIR__.'/member.php';
+require __DIR__.'/customer.php';
 
 

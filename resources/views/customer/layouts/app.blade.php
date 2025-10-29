@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ $title ?? 'Member Area' }}</title>
+    <title>{{ $title ?? 'Customer Area' }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/app-logo.png') }}">
     @vite('resources/css/app.css')
@@ -20,14 +20,14 @@
 
                 {{-- KIRI: Logo dan Menu --}}
                 <div class="flex items-center space-x-8">
-                    <a href="{{ route('member.dashboard') }}" class="flex items-center">
+                    <a href="{{ route('customer.dashboard') }}" class="flex items-center">
                         <img src="{{ asset('images/app-logo.png') }}" alt="Logo" class="h-8 w-auto">
-                        <span class="ml-2 text-gray-800 font-semibold text-lg">Member Area</span>
+                        <span class="ml-2 text-gray-800 font-semibold text-lg">Customer Area</span>
                     </a>
 
                     {{-- Menu --}}
                     <div class="hidden md:flex space-x-4">
-                        <a href="{{ route('member.dashboard') }}"
+                        <a href="{{ route('customer.dashboard') }}"
                             class="rounded-md px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50">Home</a>
                         <a href="#"
                             class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">Projects</a>
@@ -94,7 +94,7 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profil</a>
                             <a href="#"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pengaturan</a>
-                            <form method="POST" action="{{ route('member.logout') }}">
+                            <form method="POST" action="{{ route('customer.logout') }}">
                                 @csrf
                                 <button type="submit"
                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Logout</button>

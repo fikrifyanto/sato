@@ -2,14 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Member\AuthController;
+use App\Http\Controllers\Customer\AuthController;
 
-Route::prefix('member')->name('member.')->group(function () {
+Route::prefix('customer')->name('customer.')->group(function () {
     // ✅ LOGIN & REGISTER
     Route::get('/login', function () {
         // Kalau sudah login, langsung ke dashboard
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('member.dashboard');
+        if (Auth::guard('customer')->check()) {
+            return redirect()->route('customer.dashboard');
         }
         return app(AuthController::class)->showLogin();
     })->name('login');
@@ -18,8 +18,8 @@ Route::prefix('member')->name('member.')->group(function () {
 
     Route::get('/register', function () {
         // Kalau sudah login, langsung ke dashboard
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('member.dashboard');
+        if (Auth::guard('customer')->check()) {
+            return redirect()->route('customer.dashboard');
         }
         return app(AuthController::class)->showRegister();
     })->name('register');
@@ -29,10 +29,10 @@ Route::prefix('member')->name('member.')->group(function () {
     // ✅ DASHBOARD (hanya untuk yang login)
     Route::get('/dashboard', function () {
         // Kalau belum login, balikin ke login
-        if (!Auth::guard('member')->check()) {
-            return redirect()->route('member.login');
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('customer.login');
         }
-        return view('member.dashboard');
+        return view('customer.dashboard');
     })->name('dashboard');
 
     // ✅ LOGOUT

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Member;
+namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        return view('member.auth.login');
+        return view('customer.auth.login');
     }
 
     public function login(Request $request)
@@ -37,8 +37,8 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         // Coba login
-        if (Auth::guard('member')->attempt($credentials)) {
-            return redirect()->route('member.dashboard');
+        if (Auth::guard('customer')->attempt($credentials)) {
+            return redirect()->route('customer.dashboard');
         }
 
         // Jika gagal login
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        return view('member.auth.register');
+        return view('customer.auth.register');
     }
 
     public function register(Request $request)
@@ -81,17 +81,17 @@ class AuthController extends Controller
         $data = $request->only('name', 'email', 'password');
         $data['password'] = bcrypt($data['password']);
 
-        $member = Customer::create($data);
+        $customer = Customer::create($data);
 
         // Login otomatis
-        Auth::guard('member')->login($member);
+        Auth::guard('customer')->login($customer);
 
-        return redirect()->route('member.dashboard');
+        return redirect()->route('customer.dashboard');
     }
 
     public function logout()
     {
-        Auth::guard('member')->logout();
-        return redirect()->route('member.login');
+        Auth::guard('customer')->logout();
+        return redirect()->route('customer.login');
     }
 }

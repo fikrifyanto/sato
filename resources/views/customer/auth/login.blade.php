@@ -1,4 +1,4 @@
-@extends('member.layouts.auth')
+@extends('customer.layouts.auth')
 
 @section('content')
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -35,7 +35,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('member.login') }}" method="POST" class="space-y-6">
+            <form action="{{ route('customer.login') }}" method="POST" class="space-y-6">
                 @csrf
 
                 {{-- Email Field --}}
@@ -84,8 +84,8 @@
             </form>
 
             <p class="mt-10 text-center text-sm text-gray-600">
-                Not a member?
-                <a href="{{ route('member.register') }}"
+                Not a customer?
+                <a href="{{ route('customer.register') }}"
                     class="font-semibold text-indigo-600 hover:text-indigo-500">Sign Up</a>
             </p>
         </div>
