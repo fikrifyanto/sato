@@ -1,47 +1,41 @@
 <?php
 
-namespace App\Filament\Resources\Animals\Tables;
+namespace App\Filament\Resources\Orders\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class AnimalsTable
+class OrdersTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('code')
                     ->searchable(),
-                TextColumn::make('species')
+                TextColumn::make('customer_name')
                     ->searchable(),
-                TextColumn::make('age')
+                TextColumn::make('customer_email')
+                    ->searchable(),
+                TextColumn::make('customer_phone')
+                    ->searchable(),
+                TextColumn::make('address_province')
+                    ->searchable(),
+                TextColumn::make('address_city')
+                    ->searchable(),
+                TextColumn::make('address_district')
+                    ->searchable(),
+                TextColumn::make('address_postcode')
+                    ->searchable(),
+                TextColumn::make('address_detail')
+                    ->searchable(),
+                TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('gender')
-                    ->searchable()
-                    ->badge()
-                    ->formatStateUsing(fn ($state) => ucfirst($state)),
-                TextColumn::make('breed')
-                    ->searchable(),
-                TextColumn::make('color')
-                    ->searchable(),
-                TextColumn::make('weight')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('price')
-                    ->money('IDR')
-                    ->sortable(),
-                IconColumn::make('vaccinated')
-                    ->boolean(),
                 TextColumn::make('status')
-                    ->formatStateUsing(fn ($state) => ucfirst($state))
                     ->badge()
                     ->searchable(),
                 TextColumn::make('created_at')
@@ -57,7 +51,6 @@ class AnimalsTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

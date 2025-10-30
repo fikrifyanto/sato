@@ -2,15 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
 class Customer extends Authenticatable
 {
-    use Notifiable, HasUuids;
+    use Notifiable;
 
     /**
      * The guard that should be used for this model.
@@ -18,8 +14,6 @@ class Customer extends Authenticatable
      * @var string $guard
      */
     protected string $guard = 'customer';
-    protected $keyType = 'string';
-    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -29,14 +23,11 @@ class Customer extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
         'phone',
-        'profile_photo',
-        'date_of_birth',
+        'picture',
+        'birthday',
         'gender',
-        'bio',
-        'is_verified',
-        'banned_until',
+        'password',
     ];
 
     /**
@@ -59,16 +50,8 @@ class Customer extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_verified' => 'boolean',
-            'banned_until' => 'datetime',
+            'birthday' => 'date:Y-m-d'
         ];
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        if ($value) {
-            $this->attributes['password'] = bcrypt($value);
-        }
     }
 
     public function addresses()
@@ -76,8 +59,8 @@ class Customer extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
-    public function defaultAddress()
+    public function address()
     {
-        return $this->hasOne(Address::class)->where('is_default', true);
+        return $this->hasOne(Address::class)->latestOfMany();
     }
 }

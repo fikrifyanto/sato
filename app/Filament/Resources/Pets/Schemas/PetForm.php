@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Animals\Schemas;
+namespace App\Filament\Resources\Pets\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -11,7 +11,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 
-class AnimalForm
+class PetForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -47,7 +47,7 @@ class AnimalForm
                             ->columnSpanFull()
                             ->openable()
                             ->disk('public')
-                            ->directory('animals')
+                            ->directory('pets')
                             ->required(),
                         RichEditor::make('description')
                             ->columnSpanFull(),

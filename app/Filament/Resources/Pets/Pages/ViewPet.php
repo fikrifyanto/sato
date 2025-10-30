@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Animals\Pages;
+namespace App\Filament\Resources\Pets\Pages;
 
-use App\Filament\Resources\Animals\AnimalResource;
+use App\Filament\Resources\Pets\PetResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewAnimal extends ViewRecord
+class ViewPet extends ViewRecord
 {
-    protected static string $resource = AnimalResource::class;
+    protected static string $resource = PetResource::class;
 
     protected function getHeaderActions(): array
     {

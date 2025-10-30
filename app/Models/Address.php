@@ -3,26 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
-    use HasFactory, HasUuids;
-
-    protected $keyType = 'string';
-    public $incrementing = false;
-
     protected $fillable = [
-        'user_id',
+        'customer_id',
         'type',
         'label',
-        'street',
-        'district',
-        'city',
         'province',
-        'postal_code',
-        'country',
+        'city',
+        'district',
+        'postcode',
+        'detail',
         'notes',
         'is_default',
     ];
@@ -31,7 +24,7 @@ class Address extends Model
         'is_default' => 'boolean',
     ];
 
-    public function user()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }

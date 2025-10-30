@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Animal;
+use App\Models\Pet;
 use Illuminate\Database\Seeder;
 
-class AnimalSeeder extends Seeder
+class PetSeeder extends Seeder
 {
     public function run(): void
     {
-        Animal::create([
+        Pet::create([
             'name' => 'Kucing Persia',
             'species' => 'Cat',
             'age' => 2,

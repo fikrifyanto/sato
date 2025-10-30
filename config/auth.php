@@ -40,26 +40,6 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-
-        'courier' => [
-            'driver' => 'session',
-            'provider' => 'couriers',
-        ],
-
-        'customer' => [
-            'driver' => 'session',
-            'provider' => 'customers',
-        ],
-
-        'seller' => [
-            'driver' => 'session',
-            'provider' => 'sellers',
-        ],
-
-        'vet' => [
-            'driver' => 'session',
-            'provider' => 'vets',
-        ],
     ],
 
     /*
@@ -83,26 +63,6 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-        ],
-
-        'couriers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Courier::class,
-        ],
-
-        'customers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Customer::class,
-        ],
-
-        'sellers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Seller::class,
-        ],
-
-        'vets' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Vet::class,
         ],
     ],
 
@@ -128,34 +88,6 @@ return [
     'passwords' => [
         'admins' => [
             'provider' => 'admins',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'couriers' => [
-            'provider' => 'couriers',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'customers' => [
-            'provider' => 'customers',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'sellers' => [
-            'provider' => 'sellers',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-
-        'vets' => [
-            'provider' => 'vets',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
