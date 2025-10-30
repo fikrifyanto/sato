@@ -6,6 +6,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 
@@ -15,22 +16,31 @@ class ProductForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('price')
-                    ->required()
-                    ->mask(RawJs::make('$money($input)'))
-                    ->stripCharacters([','])
-                    ->prefix('IDR'),
-                TextInput::make('stock')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('category'),
-                FileUpload::make('image')
-                    ->image()
-                    ->columnSpanFull(),
-                RichEditor::make('description')
-                    ->columnSpanFull(),
+                Section::make()
+                    ->columnSpanFull()
+                    ->columns()
+                    ->schema([
+                        TextInput::make('name')
+                            ->required(),
+                        TextInput::make('price')
+                            ->required()
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters([','])
+                            ->prefix('IDR'),
+                        TextInput::make('stock')
+                            ->required()
+                            ->numeric(),
+                        TextInput::make('category'),
+                        FileUpload::make('image')
+                            ->image()
+                            ->columnSpanFull()
+                            ->openable()
+                            ->disk('public')
+                            ->directory('products')
+                            ->required(),
+                        RichEditor::make('description')
+                            ->columnSpanFull(),
+                    ])
             ]);
     }
 }

@@ -12,23 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name', 120);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('phone')->nullable()->unique();
-            $table->string('profile_photo')->nullable();
-            $table->boolean('is_verified')->default(false);
-            $table->date('date_of_birth')->nullable();
+            $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('picture')->nullable();
+            $table->date('birthday')->nullable();
             $table->enum('gender', ['male','female','other'])->nullable();
-            $table->text('bio')->nullable();
-            $table->timestamp('banned_until')->nullable();
-
+            $table->string('password');
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
-            $table->index('is_verified');
         });
     }
 
