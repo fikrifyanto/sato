@@ -9,24 +9,24 @@
 
             {{-- Search Input --}}
             <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Cari Produk</label>
-                <input type="text" x-model="search" placeholder="Cari nama produk..."
+                <label class="block text-sm text-gray-600 mb-1">Cari Nama</label>
+                <input type="text" x-model="search" placeholder="Cari nama anabul..."
                     class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
-            {{-- Filter Kategori --}}
+            {{-- Filter Spesies --}}
             <div class="mb-4">
-                <label class="block text-sm text-gray-600 mb-1">Kategori</label>
-                <template x-for="cat in categories" :key="cat">
+                <label class="block text-sm text-gray-600 mb-1">Spesies</label>
+                <template x-for="sp in species" :key="sp">
                     <div class="flex items-center space-x-2 mb-1">
-                        <input type="checkbox" :value="cat" x-model="selectedCategories"
+                        <input type="checkbox" :value="sp" x-model="selectedSpecies"
                             class="rounded text-indigo-600 focus:ring-indigo-500">
-                        <span class="text-sm text-gray-700" x-text="cat"></span>
+                        <span class="text-sm text-gray-700" x-text="sp"></span>
                     </div>
                 </template>
             </div>
 
-            {{-- Filter Harga --}}
+            {{-- Rentang Harga --}}
             <div class="mb-4">
                 <label class="block text-sm text-gray-600 mb-1">Rentang Harga</label>
                 <div class="flex items-center space-x-2">
@@ -41,20 +41,30 @@
                 </p>
             </div>
 
-
-            {{-- Filter Stok --}}
-            <div>
-                <label class="block text-sm text-gray-600 mb-1">Stok</label>
-                <select x-model="stockStatus"
+            {{-- Filter Status --}}
+            <div class="mb-4">
+                <label class="block text-sm text-gray-600 mb-1">Status</label>
+                <select x-model="status"
                     class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="">Semua</option>
-                    <option value="in">Tersedia</option>
-                    <option value="out">Habis</option>
+                    <option value="available">Tersedia</option>
+                    <option value="adopted">Sudah Diadopsi</option>
+                </select>
+            </div>
+
+            {{-- Filter Vaksin --}}
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">Status Vaksin</label>
+                <select x-model="vaccinated"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="">Semua</option>
+                    <option value="Sudah">Sudah</option>
+                    <option value="Belum">Belum</option>
                 </select>
             </div>
         </aside>
 
-        {{-- ========== GRID PRODUK ========== --}}
+        {{-- ========== GRID PELIHARAAN ========== --}}
         <main class="flex-1">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">List Anabul</h2>
 
@@ -69,21 +79,23 @@
 
                         <div class="mt-2">
                             <h3 class="text-sm font-medium text-gray-800 line-clamp-2" x-text="pet.name"></h3>
-                            <p class="text-base font-semibold text-orange-600 mt-1">Rp<span
-                                    x-text="formatNumber(pet.price)"></span></p>
-                            <p class="text-xs text-gray-500 mt-1" x-text="pet.category"></p>
+                            <p class="text-xs text-gray-500 mt-1" x-text="'Spesies: ' + pet.species"></p>
+                            <p class="text-xs text-gray-500" x-text="'Jenis: ' + pet.breed"></p>
+                            <p class="text-xs text-gray-500" x-text="'Vaksin: ' + pet.vaccinated"></p>
+                            <p class="text-base font-semibold text-orange-600 mt-1">
+                                Rp<span x-text="formatNumber(pet.price)"></span>
+                            </p>
                         </div>
                     </div>
                 </template>
             </div>
 
             <template x-if="filteredPets().length === 0">
-                <p class="text-center text-gray-500 mt-10">Tidak ada produk yang cocok dengan filter.</p>
+                <p class="text-center text-gray-500 mt-10">Tidak ada peliharaan yang cocok dengan filter.</p>
             </template>
         </main>
     </div>
 @endsection
-
 
 @section('scripts')
     <script>
@@ -92,9 +104,10 @@
                 search: '',
                 minPrice: 0,
                 maxPrice: 10000000,
-                stockStatus: '',
-                selectedCategories: [],
-                categories: {!! json_encode($pets->pluck('category')->unique()->values()) !!},
+                status: '',
+                vaccinated: '',
+                selectedSpecies: [],
+                species: {!! json_encode($speciesList) !!},
 
                 pets: {!! $petsJson !!},
 
@@ -105,11 +118,11 @@
                 filteredPets() {
                     return this.pets.filter(p => {
                         const matchName = p.name.toLowerCase().includes(this.search.toLowerCase());
-                        const matchCategory = this.selectedCategories.length === 0 || this.selectedCategories
-                            .includes(p.category);
+                        const matchSpecies = this.selectedSpecies.length === 0 || this.selectedSpecies.includes(p.species);
                         const matchPrice = p.price >= this.minPrice && p.price <= this.maxPrice;
-                        const matchStock = this.stockStatus === '' || p.stock === this.stockStatus;
-                        return matchName && matchCategory && matchPrice && matchStock;
+                        const matchStatus = this.status === '' || p.status === this.status;
+                        const matchVacc = this.vaccinated === '' || p.vaccinated === this.vaccinated;
+                        return matchName && matchSpecies && matchPrice && matchStatus && matchVacc;
                     });
                 }
             }

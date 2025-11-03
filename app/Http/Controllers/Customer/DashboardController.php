@@ -51,19 +51,24 @@ class DashboardController extends Controller
             return [
                 'id' => $p->id,
                 'name' => $p->name,
-                'price' => $p->price,
-                'category' => $p->category ?? 'Lainnya',
+                'species' => $p->species ?? 'Lainnya',
+                'breed' => $p->breed ?? '-',
+                'gender' => ucfirst($p->gender ?? 'Tidak Diketahui'),
+                'status' => $p->status ?? 'available',
+                'vaccinated' => $p->vaccinated ? 'Sudah' : 'Belum',
+                'price' => $p->price ?? 0,
                 'image' => !empty($p->images)
                     ? asset('storage/' . (is_array($p->images) ? $p->images[0] : $p->images))
                     : 'https://picsum.photos/300?random=' . $p->id,
-                'stock' => $p->stock > 0 ? 'in' : 'out',
+                'stock' => $p->status === 'available' ? 'in' : 'out',
             ];
         });
 
-        // ubah ke JSON
+        // buat list unik spesies untuk filter
+        $speciesList = $pets->pluck('species')->unique()->values();
+
         $petsJson = $petsData->toJson();
 
-        // kirim keduanya ke view
-        return view('customer.pets', compact('pets', 'petsJson'));
+        return view('customer.pets', compact('pets', 'petsJson', 'speciesList'));
     }
 }

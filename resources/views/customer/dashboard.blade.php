@@ -37,26 +37,30 @@
 
             <!-- 🟩 Kanan: Card -->
             <div class="grid grid-rows-2 gap-3 h-64 sm:h-80 md:h-[28rem]">
+
                 {{-- Card 1: Adopsi --}}
-                <div class="relative rounded-xl overflow-hidden shadow-lg group">
+                <a href="{{ route('customer.pets') }}" class="relative rounded-xl overflow-hidden shadow-lg group block">
                     <img src="{{ asset('images/card1.jpg') }}" alt="Adopsi"
                         class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
                     <div class="absolute left-4 bottom-4 text-white">
                         <h2 class="text-lg font-semibold">Adopsi</h2>
                     </div>
-                </div>
+                </a>
 
                 {{-- Card 2: Produk Kebutuhan Hewan --}}
-                <div class="relative rounded-xl overflow-hidden shadow-lg group">
+                <a href="{{ route('customer.products') }}"
+                    class="relative rounded-xl overflow-hidden shadow-lg group block">
                     <img src="{{ asset('images/card2.jpg') }}" alt="Produk Kebutuhan Hewan"
                         class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
                     <div class="absolute left-4 bottom-4 text-white">
                         <h2 class="text-lg font-semibold">Produk Kebutuhan Hewan</h2>
                     </div>
-                </div>
+                </a>
+
             </div>
+
 
         </div>
     </div>
@@ -66,17 +70,17 @@
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Berikan Aksesoris Terbaik Anabul</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             @foreach ($products->take(6) as $product)
-            <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
-                <div class="aspect-[1/1] overflow-hidden rounded-md">
-                    @if (!empty($product->images))
-                    <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->name }}"
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                    @else
-                    <img src="https://picsum.photos/300?random={{ $product->id }}" alt="{{ $product->name }}"
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
+                    <div class="aspect-[1/1] overflow-hidden rounded-md">
+                        @if (!empty($product->images))
+                            <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->name }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @else
+                            <img src="https://picsum.photos/300?random={{ $product->id }}" alt="{{ $product->name }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @endif
                     </div>
-                    
+
                     <div class="mt-2">
                         <h3 class="text-sm font-medium text-gray-800 line-clamp-2">{{ $product->name }}</h3>
                         <p class="text-base font-semibold text-orange-600 mt-1">
@@ -85,17 +89,17 @@
                         <p class="text-xs text-gray-500 mt-1">{{ $product->category ?? 'Aksesoris' }}</p>
                     </div>
                 </div>
-                @endforeach
-            </div>
-            
-            <div class="mt-4">
-                <a href="{{ route('customer.products') }}"
-                class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition cursor-pointer w-full py-2 text-center">
+            @endforeach
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ route('customer.products') }}"
+                class="block bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition w-full py-2 text-center">
                 Lihat Selengkapnya
             </a>
         </div>
     </div>
-    
+
     <div class="my-8 px-4">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Baikmu</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -124,10 +128,10 @@
         </div>
 
         <div class="mt-4">
-            <div
-                class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition cursor-pointer w-full py-2 text-center">
+            <a href="{{ route('customer.pets') }}"
+                class="block bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition w-full py-2 text-center">
                 Lihat Selengkapnya
-            </div>
+            </a>
         </div>
     </div>
 @endsection
