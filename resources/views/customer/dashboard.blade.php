@@ -37,16 +37,30 @@
 
             <!-- 🟩 Kanan: Card -->
             <div class="grid grid-rows-3 gap-3 h-64 sm:h-80 md:h-[28rem]">
-                @foreach (['Adopsi', 'Makanan Hewan', 'Aksesoris'] as $title)
-                    <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                        <img src="{{ asset('images/card1.jpg') }}" alt="{{ $title }}"
-                            class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
-                        <div class="absolute left-4 bottom-4 text-white">
-                            <h2 class="text-lg font-semibold">{{ $title }}</h2>
-                        </div>
+                <div class="relative rounded-xl overflow-hidden shadow-lg group">
+                    <img src="{{ asset('images/card1.jpg') }}" alt="Adopsi"
+                        class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                    <div class="absolute left-4 bottom-4 text-white">
+                        <h2 class="text-lg font-semibold">Adopsi</h2>
                     </div>
-                @endforeach
+                </div>
+                <div class="relative rounded-xl overflow-hidden shadow-lg group">
+                    <img src="{{ asset('images/card2.jpg') }}" alt="Makanan Hewan"
+                        class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                    <div class="absolute left-4 bottom-4 text-white">
+                        <h2 class="text-lg font-semibold">Makanan Hewan</h2>
+                    </div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden shadow-lg group">
+                    <img src="{{ asset('images/card1.jpg') }}" alt="Aksesoris"
+                        class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+                    <div class="absolute left-4 bottom-4 text-white">
+                        <h2 class="text-lg font-semibold">Aksesoris</h2>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
