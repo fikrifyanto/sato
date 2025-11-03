@@ -1,0 +1,148 @@
+@startuml
+title Class Diagram Sato (Aplikasi Adopsi dan Penjualan Aksesoris Hewan)
+
+' ==== CLASS DEFINITIONS ====
+class Admin {
+  - id: int
+  - name: string
+  - email: string
+  - password: string
+  --
+  + manageProducts()
+  + manageOrders()
+  + managePets()
+  + manageCustomers()
+}
+
+class Customer {
+  - id: int
+  - name: string
+  - email: string
+  - phone: string
+  - picture: string
+  - birthday: date
+  - gender: string
+  - password: string
+  --
+  + register()
+  + login()
+  + placeOrder()
+  + updateAddress(address: Address)
+}
+
+class Address {
+  - id: int
+  - customer_id: int
+  - type: string
+  - label: string
+  - province: string
+  - city: string
+  - district: string
+  - postcode: string
+  - detail: string?
+  - notes: string?
+}
+
+class Pet {
+  - id: int
+  - images: json
+  - name: string
+  - species: string?
+  - breed: string?
+  - age: int?
+  - gender: string?
+  - weight: int?
+  - description: string?
+  - vaccinated: boolean
+  - price: float
+  - status: string
+  --
+  + updateStatus(status: string)
+}
+
+class Product {
+  - id: int
+  - name: string
+  - description: string?
+  - price: float
+  - stock: int
+  - category: string?
+  - images: json?
+  --
+  + updateStock(quantity: int)
+}
+
+class Order {
+  - id: int
+  - customer_id: int
+  - address_id: int
+  - code: string
+  - customer_name: string
+  - customer_email: string
+  - customer_phone: string?
+  - address_type: string?
+  - address_label: string?
+  - address_province: string
+  - address_city: string
+  - address_district: string
+  - address_postcode: string
+  - address_detail: string?
+  - address_notes: string?
+  - amount: float
+  - status: string
+  --
+  + processPayment()
+  + updateStatus(status: string)
+}
+
+class OrderItem {
+  - id: int
+  - order_id: int
+  - is_adoption: boolean
+  - item_type: string
+  - item_id: string
+  - name: string
+  - description: string?
+  - metadata: json?
+  - quantity: int
+  - price: float
+  - subtotal: float
+}
+
+class OrderPayment {
+  - id: int
+  - order_id: int
+  - payment_id: string
+  - payment_url: string
+  - payment_method: string
+  - amount: float
+  - metadata: json?
+  - status string
+  - paid_at: date?
+  - expired_at: data?
+  --
+  updateStatus(status: string)
+}
+
+
+' ==== RELATIONSHIPS ====
+
+' Admin can manage Products, Pets, and Orders
+Admin --> Customer : manages >
+Admin --> Product : manages >
+Admin --> Pet : manages >
+Admin --> Order : manages >
+
+' Customer has Address and can place Orders
+Customer "1" --> "1..*" Address : has >
+Customer "1" --> "0..*" Order : places >
+
+' Order has multiple OrderItems and one Payment
+Order "1" --> "1..*" OrderItem : contains >
+Order "1" --> "1" OrderPayment : paid by >
+
+' OrderItem references Product/Pet
+OrderItem "1" --> "1" Product : morph(item) >
+OrderItem "1" --> "1" Pet : morph(item) >
+
+@enduml
