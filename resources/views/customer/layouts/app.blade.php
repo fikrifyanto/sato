@@ -28,12 +28,24 @@
                     {{-- Menu --}}
                     <div class="hidden md:flex space-x-4">
                         <a href="{{ route('customer.dashboard') }}"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50">Home</a>
-                        <a href="#"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">Projects</a>
-                        <a href="#"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900">Reports</a>
+                            class="rounded-md px-3 py-2 text-sm font-medium 
+                            {{ request()->routeIs('customer.dashboard') ? 'text-indigo-600 bg-indigo-100' : 'text-indigo-600 hover:bg-indigo-100' }}">
+                            Home
+                        </a>
+
+                        <a href="{{ route('customer.products') }}"
+                            class="rounded-md px-3 py-2 text-sm font-medium 
+                            {{ request()->routeIs('customer.products') ? 'text-indigo-600 bg-indigo-100' : 'text-indigo-600 hover:bg-indigo-100' }}">
+                            Products
+                        </a>
+
+                        <a href="{{ route('customer.pets') }}"
+                            class="rounded-md px-3 py-2 text-sm font-medium 
+                            {{ request()->routeIs('customer.pets') ? 'text-indigo-600 bg-indigo-100' : 'text-indigo-600 hover:bg-indigo-100' }}">
+                            Pets
+                        </a>
                     </div>
+
                 </div>
 
                 {{-- KANAN: Ikon Aksi --}}

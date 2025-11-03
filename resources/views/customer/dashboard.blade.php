@@ -36,7 +36,8 @@
             </div>
 
             <!-- 🟩 Kanan: Card -->
-            <div class="grid grid-rows-3 gap-3 h-64 sm:h-80 md:h-[28rem]">
+            <div class="grid grid-rows-2 gap-3 h-64 sm:h-80 md:h-[28rem]">
+                {{-- Card 1: Adopsi --}}
                 <div class="relative rounded-xl overflow-hidden shadow-lg group">
                     <img src="{{ asset('images/card1.jpg') }}" alt="Adopsi"
                         class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
@@ -45,70 +46,78 @@
                         <h2 class="text-lg font-semibold">Adopsi</h2>
                     </div>
                 </div>
+
+                {{-- Card 2: Produk Kebutuhan Hewan --}}
                 <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                    <img src="{{ asset('images/card2.jpg') }}" alt="Makanan Hewan"
+                    <img src="{{ asset('images/card2.jpg') }}" alt="Produk Kebutuhan Hewan"
                         class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
                     <div class="absolute left-4 bottom-4 text-white">
-                        <h2 class="text-lg font-semibold">Makanan Hewan</h2>
-                    </div>
-                </div>
-                <div class="relative rounded-xl overflow-hidden shadow-lg group">
-                    <img src="{{ asset('images/card1.jpg') }}" alt="Aksesoris"
-                        class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
-                    <div class="absolute left-4 bottom-4 text-white">
-                        <h2 class="text-lg font-semibold">Aksesoris</h2>
+                        <h2 class="text-lg font-semibold">Produk Kebutuhan Hewan</h2>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     {{-- Produk Section --}}
     <div class="my-8 px-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Baikmu</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Berikan Aksesoris Terbaik Anabul</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            @foreach (range(1, 6) as $i)
-                <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
-                    <div class="aspect-[1/1] overflow-hidden rounded-md">
-                        <img src="https://picsum.photos/300?random={{ $i }}" alt="Produk {{ $i }}"
-                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            @foreach ($products->take(6) as $product)
+            <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
+                <div class="aspect-[1/1] overflow-hidden rounded-md">
+                    @if (!empty($product->images))
+                    <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->name }}"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    @else
+                    <img src="https://picsum.photos/300?random={{ $product->id }}" alt="{{ $product->name }}"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @endif
                     </div>
+                    
                     <div class="mt-2">
-                        <h3 class="text-sm font-medium text-gray-800 line-clamp-2">Nama Produk {{ $i }}</h3>
+                        <h3 class="text-sm font-medium text-gray-800 line-clamp-2">{{ $product->name }}</h3>
                         <p class="text-base font-semibold text-orange-600 mt-1">
-                            Rp{{ number_format(120000 + $i * 5000) }}
+                            Rp{{ number_format($product->price ?? 0) }}
                         </p>
-                        <p class="text-xs text-gray-500 mt-1">Jakarta</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ $product->category ?? 'Aksesoris' }}</p>
                     </div>
                 </div>
-            @endforeach
-        </div>
-
-        <div class="mt-4">
-            <div
+                @endforeach
+            </div>
+            
+            <div class="mt-4">
+                <a href="{{ route('customer.products') }}"
                 class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition cursor-pointer w-full py-2 text-center">
                 Lihat Selengkapnya
-            </div>
+            </a>
         </div>
     </div>
-
+    
     <div class="my-8 px-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Berikan Nutrisi Anabul</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Baikmu</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            @foreach (range(1, 6) as $i)
+            @foreach ($pets->take(6) as $pet)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
                     <div class="aspect-[1/1] overflow-hidden rounded-md">
-                        <img src="https://picsum.photos/300?random={{ $i }}" alt="Produk {{ $i }}"
-                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @if (!empty($pet->images) && is_array($pet->images) && count($pet->images) > 0)
+                            <img src="{{ asset('storage/' . $pet->images[0]) }}" alt="{{ $pet->name }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @else
+                            <img src="https://picsum.photos/300?random={{ $pet->id }}" alt="{{ $pet->name }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @endif
                     </div>
+
                     <div class="mt-2">
-                        <h3 class="text-sm font-medium text-gray-800 line-clamp-2">Nama Produk {{ $i }}</h3>
-                        <p class="text-base font-semibold text-orange-600 mt-1">
-                            Rp{{ number_format(120000 + $i * 5000) }}
+                        <h3 class="text-sm font-medium text-gray-800 line-clamp-2">{{ $pet->name }}</h3>
+                        <p class="text-xs text-gray-500 mt-1">{{ ucfirst($pet->species) }} • {{ ucfirst($pet->gender) }}
                         </p>
-                        <p class="text-xs text-gray-500 mt-1">Jakarta</p>
+                        <p class="text-base font-semibold text-orange-600 mt-1">
+                            Rp{{ number_format($pet->price ?? 0) }}
+                        </p>
                     </div>
                 </div>
             @endforeach

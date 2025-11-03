@@ -1,40 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Customer\AuthController;
+use App\Http\Controllers\Customer\DashboardController;
 
+// Semua URL customer diawali dengan /customer
 Route::prefix('customer')->name('customer.')->group(function () {
-    // ✅ LOGIN & REGISTER
-    Route::get('/login', function () {
-        // Kalau sudah login, langsung ke dashboard
-        if (Auth::guard('customer')->check()) {
-            return redirect()->route('customer.dashboard');
-        }
-        return app(AuthController::class)->showLogin();
-    })->name('login');
 
-    Route::post('/login', [AuthController::class, 'login']);
+    // =======================
+    // 🔐 AUTH (login & register)
+    // =======================
+    Route::middleware('guest:customer')->group(function () {
+        Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+        Route::post('/register', [AuthController::class, 'register']);
+    });
 
-    Route::get('/register', function () {
-        // Kalau sudah login, langsung ke dashboard
-        if (Auth::guard('customer')->check()) {
-            return redirect()->route('customer.dashboard');
-        }
-        return app(AuthController::class)->showRegister();
-    })->name('register');
-
-    Route::post('/register', [AuthController::class, 'register']);
-
-    // ✅ DASHBOARD (hanya untuk yang login)
-    Route::get('/dashboard', function () {
-        // Kalau belum login, balikin ke login
-        if (!Auth::guard('customer')->check()) {
-            return redirect()->route('customer.login');
-        }
-        return view('customer.dashboard');
-    })->name('dashboard');
-
-    // ✅ LOGOUT
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // =======================
+    // 🧭 DASHBOARD & PRODUCT (hanya login)
+    // =======================
+    Route::middleware('auth:customer')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/products', [DashboardController::class, 'products'])->name('products');
+        Route::get('/pets', [DashboardController::class, 'pets'])->name('pets');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
 });
