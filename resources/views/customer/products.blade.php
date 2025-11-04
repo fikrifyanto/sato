@@ -58,9 +58,9 @@
         <main class="flex-1">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Produk Kebutuhan Hewan</h2>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-6 gap-4">
                 <template x-for="product in filteredProducts()" :key="product.id">
-                    <div
+                    <div @click="window.location.href='/customer/products/' + product.id" 
                         class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer flex flex-col justify-between">
                         <div class="aspect-[1/1] overflow-hidden rounded-md">
                             <img :src="product.image" :alt="product.name"
@@ -71,6 +71,7 @@
                             <h3 class="text-sm font-medium text-gray-800 line-clamp-2" x-text="product.name"></h3>
                             <p class="text-base font-semibold text-orange-600 mt-1">Rp<span
                                     x-text="formatNumber(product.price)"></span></p>
+                            <p class="text-xs text-gray-500 mt-1">Stock - <span x-text="product.stock_qty"></span></p>
                             <p class="text-xs text-gray-500 mt-1" x-text="product.category"></p>
                         </div>
                     </div>

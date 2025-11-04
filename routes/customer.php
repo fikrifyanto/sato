@@ -25,6 +25,10 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/products', [DashboardController::class, 'products'])->name('products');
         Route::get('/pets', [DashboardController::class, 'pets'])->name('pets');
+
+        Route::get('/pets/{id}', [DashboardController::class, 'showPets'])->name('pet_detail');
+        Route::get('/products/{id}', [DashboardController::class, 'showProduct'])->name('product_detail');
+
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
         // Route::get('/order-list', [ProfileController::class, 'orderlist'])->name('order.list');
