@@ -67,7 +67,10 @@
 
     {{-- Produk Section --}}
     <div class="my-8 px-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Berikan Aksesoris Terbaik Anabul</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Produk Pilihan</h2>
+            <a href="{{ route('customer.products') }}" class="text-sm text-amber-600 hover:underline">Lihat Semua</a>
+        </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             @foreach ($products->take(6) as $product)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
@@ -91,17 +94,13 @@
                 </div>
             @endforeach
         </div>
-
-        <div class="mt-4">
-            <a href="{{ route('customer.products') }}"
-                class="block bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition w-full py-2 text-center">
-                Lihat Selengkapnya
-            </a>
-        </div>
     </div>
 
     <div class="my-8 px-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Baikmu</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Baikmu</h2>
+            <a href="{{ route('customer.pets') }}" class="text-sm text-amber-600 hover:underline">Lihat Semua</a>
+        </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             @foreach ($pets->take(6) as $pet)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
@@ -126,12 +125,36 @@
                 </div>
             @endforeach
         </div>
+    </div>
 
-        <div class="mt-4">
-            <a href="{{ route('customer.pets') }}"
-                class="block bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg shadow transition w-full py-2 text-center">
-                Lihat Selengkapnya
-            </a>
+    <div class="my-8 px-4">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Berikan Nutrisi Terbaik Untuk Anabul</h2>
+            <a href="{{ route('customer.pets') }}" class="text-sm text-amber-600 hover:underline">Lihat Semua</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            @foreach ($pets->take(6) as $pet)
+                <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
+                    <div class="aspect-[1/1] overflow-hidden rounded-md">
+                        @if (!empty($pet->images) && is_array($pet->images) && count($pet->images) > 0)
+                            <img src="{{ asset('storage/' . $pet->images[0]) }}" alt="{{ $pet->name }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @else
+                            <img src="https://picsum.photos/300?random={{ $pet->id }}" alt="{{ $pet->name }}"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        @endif
+                    </div>
+
+                    <div class="mt-2">
+                        <h3 class="text-sm font-medium text-gray-800 line-clamp-2">{{ $pet->name }}</h3>
+                        <p class="text-xs text-gray-500 mt-1">{{ ucfirst($pet->species) }} • {{ ucfirst($pet->gender) }}
+                        </p>
+                        <p class="text-base font-semibold text-orange-600 mt-1">
+                            Rp{{ number_format($pet->price ?? 0) }}
+                        </p>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection

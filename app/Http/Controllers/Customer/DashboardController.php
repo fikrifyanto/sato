@@ -47,9 +47,13 @@ class DashboardController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $image = !empty($product->images)
-            ? (is_array($product->images) ? asset('storage/' . $product->images[0]) : asset('storage/' . $product->images))
-            : 'https://picsum.photos/500?random=' . $product->id;
+        // Ambil semua gambar
+        $images = !empty($product->images)
+            ? array_map(
+                fn($img) => asset('storage/' . $img),
+                is_array($product->images) ? $product->images : [$product->images]
+            )
+            : ['https://picsum.photos/500?random=' . $product->id];
 
         $productData = [
             'id' => $product->id,
@@ -57,14 +61,20 @@ class DashboardController extends Controller
             'price' => $product->price,
             'category' => $product->category ?? 'Lainnya',
             'description' => $product->description ?? '-',
-            'image' => $image,
+
+            // semua gambar
+            'images' => $images,
+
+            // gambar utama
+            'image_main' => $images[0],
+
+            // stok
             'stock' => $product->stock > 0 ? 'in' : 'out',
             'stock_qty' => $product->stock,
         ];
 
         return view('customer.product_detail', compact('productData'));
     }
-
 
     public function pets()
     {
@@ -110,9 +120,12 @@ class DashboardController extends Controller
     {
         $pet = Pet::findOrFail($id);
 
-        $image = !empty($pet->images)
-            ? (is_array($pet->images) ? asset('storage/' . $pet->images[0]) : asset('storage/' . $pet->images))
-            : 'https://picsum.photos/500?random=' . $pet->id;
+        $images = !empty($pet->images)
+            ? array_map(
+                fn($img) => asset('storage/' . $img),
+                is_array($pet->images) ? $pet->images : [$pet->images]
+            )
+            : ['https://picsum.photos/500?random=' . $pet->id];
 
         $petData = [
             'id' => $pet->id,
@@ -124,10 +137,133 @@ class DashboardController extends Controller
             'vaccinated' => $pet->vaccinated ? 'Sudah' : 'Belum',
             'price' => $pet->price ?? 0,
             'description' => $pet->description ?? '-',
-            'image' => $image,
+            'images' => $images,
+            'image_main' => $images[0] ?? null,
             'stock' => $pet->status === 'available' ? 'in' : 'out',
         ];
 
         return view('customer.pet_detail', compact('petData'));
+    }
+
+    public function carts()
+    {
+        // Dummy data cart (bisa diganti nanti kalau sudah ada tabel cart)
+        $cartItems = [
+            [
+                'id' => 1,
+                'name' => 'Royal Canin Indoor Cat Food 2KG',
+                'category' => 'Makanan Kucing',
+                'price' => 220000,
+                'qty' => 1,
+                'image' => 'https://picsum.photos/120?random=1',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Kalung Kucing Anti Hilang GPS Tracker',
+                'category' => 'Aksesoris Kucing',
+                'price' => 150000,
+                'qty' => 2,
+                'image' => 'https://picsum.photos/120?random=2',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Pasir Kucing Wangi Lavender 10L',
+                'category' => 'Perlengkapan',
+                'price' => 75000,
+                'qty' => 1,
+                'image' => 'https://picsum.photos/120?random=3',
+            ],
+        ];
+
+        // Hitung total harga item
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            $subtotal += $item['price'] * $item['qty'];
+        }
+
+        // Dummy shipping cost
+        $shippingCost = 30000;
+
+        // Total pembayaran
+        $total = $subtotal + $shippingCost;
+
+        // Kirim data ke view
+        return view('customer.carts', compact('cartItems', 'subtotal', 'shippingCost', 'total'));
+    }
+
+    public function transactions()
+    {
+        // Dummy Data
+        $transactions = [
+            [
+                'id' => 'TRX001',
+                'date' => '2025-01-15',
+                'status' => 'completed',
+                'total' => 350000,
+                'items' => [
+                    ['name' => 'Premium Cat Food', 'qty' => 2, 'price' => 150000],
+                    ['name' => 'Mainan Kucing', 'qty' => 1, 'price' => 50000],
+                ]
+            ],
+            [
+                'id' => 'TRX002',
+                'date' => '2025-01-10',
+                'status' => 'pending',
+                'total' => 125000,
+                'items' => [
+                    ['name' => 'Shampoo Anjing', 'qty' => 1, 'price' => 125000],
+                ]
+            ],
+            [
+                'id' => 'TRX003',
+                'date' => '2024-12-29',
+                'status' => 'cancelled',
+                'total' => 90000,
+                'items' => [
+                    ['name' => 'Vitamin Kucing', 'qty' => 1, 'price' => 90000],
+                ]
+            ],
+        ];
+
+        return view('customer.transactions', compact('transactions'));
+    }
+
+    public function transactionDetail($id)
+    {
+        // Dummy detail data
+        $transaction = [
+            'id'           => $id,
+            'order_code'   => 'TRX20250101',
+            'status'       => 'Selesai',
+            'date'         => '2025-11-21 14:32',
+            'subtotal'     => 570000,
+            'ongkir'       => 20000,
+            'diskon'       => 10000,
+            'total'        => 580000,
+            'customer'     => [
+                'name'    => 'Andre Prasetyo',
+                'phone'   => '081234567890',
+                'address' => 'Jl. Merdeka No. 11, Bandung, Jawa Barat',
+                'zipcode' => '40111'
+            ],
+            'products'     => [
+                [
+                    'name'  => 'Dog Food Premium 2KG',
+                    'variasi' => 'Original',
+                    'qty'   => 1,
+                    'price' => 120000,
+                    'image' => 'https://picsum.photos/200?random=1',
+                ],
+                [
+                    'name'  => 'Kandang Stainless Medium',
+                    'variasi' => 'Silver',
+                    'qty'   => 1,
+                    'price' => 450000,
+                    'image' => 'https://picsum.photos/200?random=2',
+                ],
+            ]
+        ];
+
+        return view('customer.transaction_detail', compact('transaction'));
     }
 }
