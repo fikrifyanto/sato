@@ -29,6 +29,11 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::get('/pets/{id}', [DashboardController::class, 'showPets'])->name('pet_detail');
         Route::get('/products/{id}', [DashboardController::class, 'showProduct'])->name('product_detail');
 
+        Route::get('/carts', [DashboardController::class, 'carts'])->name('carts');
+
+        Route::get('/transactions', [DashboardController::class, 'transactions'])->name('transactions');
+        Route::get('/transaction/{id}', [DashboardController::class, 'transactionDetail'])->name('transaction_detail');
+
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
         // Route::get('/order-list', [ProfileController::class, 'orderlist'])->name('order.list');

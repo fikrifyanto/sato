@@ -78,7 +78,7 @@
 
     {{-- GRID PELIHARAAN --}}
     <main class="flex-1">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">List Anabul</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Terbaikmu</h2>
 
         <div class="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-6 gap-4">
             <template x-for="pet in filteredPets()" :key="pet.id">

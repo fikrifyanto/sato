@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ $title ?? 'Customer Auth' }}</title>
@@ -7,9 +8,9 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/app-logo.png') }}">
     @vite('resources/css/app.css')
 </head>
+
 <body class="min-h-screen flex items-center justify-center bg-gray-200">
-    <main class="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        @yield('content')
-    </main>
+    @yield('content')
 </body>
+
 </html>
