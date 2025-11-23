@@ -2,8 +2,6 @@
 
 @section('content')
     <div class="w-full flex flex-col items-center">
-
-        <!-- Logo + Title -->
         <div class="sm:w-full sm:max-w-sm mt-10 text-center">
             <img src="{{ asset('images/app-logo.png') }}" alt="Your Company" class="mx-auto h-10 w-auto" />
 
@@ -11,8 +9,6 @@
                 Create as Account
             </h2>
         </div>
-
-        <!-- CARD -->
         <main class="w-full max-w-md bg-white p-6 mt-8 rounded-lg shadow-md">
 
             @if ($errors->any())
@@ -53,14 +49,26 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Password</label>
-                    <input name="password" type="password" required
+                    <input id="password" name="password" type="password" required
                         class="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2" />
+                    <div id="password-requirements" class="mt-2 text-xs text-gray-600">
+                        <span id="req-length" class="text-gray-400 hidden">Min 8 karakter</span>
+                        <span id="sep-1" class="mx-1 hidden">•</span>
+                        <span id="req-uppercase" class="text-gray-400 hidden">1 huruf besar</span>
+                        <span id="sep-2" class="mx-1 hidden">•</span>
+                        <span id="req-lowercase" class="text-gray-400 hidden">1 huruf kecil</span>
+                        <span id="sep-3" class="mx-1 hidden">•</span>
+                        <span id="req-number" class="text-gray-400 hidden">1 angka</span>
+                        <span id="sep-4" class="mx-1 hidden">•</span>
+                        <span id="req-special" class="text-gray-400 hidden">1 karakter khusus (@$!%*?&)</span>
+                    </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input name="password_confirmation" type="password" required
+                    <input id="password_confirmation" name="password_confirmation" type="password" required
                         class="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2" />
+                    <p id="password-match-message" class="mt-2 text-sm hidden"></p>
                 </div>
 
                 <button type="submit"
@@ -79,6 +87,123 @@
         </main>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.getElementById('password');
+            const passwordConfirmation = document.getElementById('password_confirmation');
+            const matchMessage = document.getElementById('password-match-message');
+            
+            let hasInteracted = false;
+
+            password.addEventListener('focus', function() {
+                if (!hasInteracted) {
+                    document.getElementById('req-length').classList.remove('hidden');
+                    hasInteracted = true;
+                }
+            });
+
+            password.addEventListener('input', function() {
+                const value = this.value;
+                
+                if (value.length === 0) {
+                    document.getElementById('req-length').classList.add('hidden');
+                    document.getElementById('sep-1').classList.add('hidden');
+                    document.getElementById('req-uppercase').classList.add('hidden');
+                    document.getElementById('sep-2').classList.add('hidden');
+                    document.getElementById('req-lowercase').classList.add('hidden');
+                    document.getElementById('sep-3').classList.add('hidden');
+                    document.getElementById('req-number').classList.add('hidden');
+                    document.getElementById('sep-4').classList.add('hidden');
+                    document.getElementById('req-special').classList.add('hidden');
+                    hasInteracted = false;
+                    checkPasswordMatch();
+                    return;
+                }
+                
+                const lengthValid = value.length >= 8;
+                updateRequirement('length', lengthValid);
+                
+                if (lengthValid) {
+                    document.getElementById('req-length').classList.add('hidden');
+                    document.getElementById('req-uppercase').classList.remove('hidden');
+                    
+                    const uppercaseValid = /[A-Z]/.test(value);
+                    updateRequirement('uppercase', uppercaseValid);
+                    
+                    if (uppercaseValid) {
+                        document.getElementById('req-uppercase').classList.add('hidden');
+                        document.getElementById('req-lowercase').classList.remove('hidden');
+                        
+                        const lowercaseValid = /[a-z]/.test(value);
+                        updateRequirement('lowercase', lowercaseValid);
+                        
+                        if (lowercaseValid) {
+                            document.getElementById('req-lowercase').classList.add('hidden');
+                            document.getElementById('req-number').classList.remove('hidden');
+                            
+                            const numberValid = /[0-9]/.test(value);
+                            updateRequirement('number', numberValid);
+                            
+                            if (numberValid) {
+                                document.getElementById('req-number').classList.add('hidden');
+                                document.getElementById('req-special').classList.remove('hidden');
+                                
+                                const specialValid = /[@$!%*?&]/.test(value);
+                                updateRequirement('special', specialValid);
+                                
+                                if (specialValid) {
+                                    document.getElementById('req-special').classList.add('hidden');
+                                }
+                            }
+                        }
+                    }
+                }
+
+                checkPasswordMatch();
+            });
+
+            passwordConfirmation.addEventListener('input', checkPasswordMatch);
+
+            function updateRequirement(requirement, isValid) {
+                const element = document.getElementById(`req-${requirement}`);
+                
+                if (isValid) {
+                    element.classList.remove('text-gray-400');
+                    element.classList.add('text-green-600');
+                } else {
+                    element.classList.remove('text-green-600');
+                    element.classList.add('text-gray-400');
+                }
+            }
+
+            function checkPasswordMatch() {
+                const passwordValue = password.value;
+                const confirmValue = passwordConfirmation.value;
+
+                if (confirmValue === '') {
+                    matchMessage.classList.add('hidden');
+                    passwordConfirmation.classList.remove('border-red-500', 'border-green-500');
+                    passwordConfirmation.classList.add('border-gray-300');
+                    return;
+                }
+
+                if (passwordValue === confirmValue) {
+                    matchMessage.textContent = 'Password cocok';
+                    matchMessage.classList.remove('hidden', 'text-red-600');
+                    matchMessage.classList.add('text-green-600');
+                    passwordConfirmation.classList.remove('border-red-500', 'border-gray-300');
+                    passwordConfirmation.classList.add('border-green-500');
+                } else {
+                    matchMessage.textContent = 'Password tidak cocok';
+                    matchMessage.classList.remove('hidden', 'text-green-600');
+                    matchMessage.classList.add('text-red-600');
+                    passwordConfirmation.classList.remove('border-green-500', 'border-gray-300');
+                    passwordConfirmation.classList.add('border-red-500');
+                }
+            }
+        });
+    </script>
 
     {{-- <div class="max-w-md mx-auto bg-white shadow p-6 rounded">
     <h2 class="text-xl font-bold mb-4">Register Customer</h2>

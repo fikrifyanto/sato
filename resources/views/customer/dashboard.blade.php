@@ -75,8 +75,12 @@
             @foreach ($products->take(6) as $product)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
                     <div class="aspect-[1/1] overflow-hidden rounded-md">
-                        @if (!empty($product->images))
-                            <img src="{{ asset('storage/' . $product->images) }}" alt="{{ $product->name }}"
+                        @php
+                            $imagePath = !empty($product->images) ? (is_array($product->images) ? $product->images[0] : $product->images) : null;
+                            $imageExists = $imagePath && @file_exists(public_path('storage/' . $imagePath));
+                        @endphp
+                        @if ($imageExists)
+                            <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $product->name }}"
                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @else
                             <img src="https://picsum.photos/300?random={{ $product->id }}" alt="{{ $product->name }}"
@@ -105,8 +109,12 @@
             @foreach ($pets->take(6) as $pet)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
                     <div class="aspect-[1/1] overflow-hidden rounded-md">
-                        @if (!empty($pet->images) && is_array($pet->images) && count($pet->images) > 0)
-                            <img src="{{ asset('storage/' . $pet->images[0]) }}" alt="{{ $pet->name }}"
+                        @php
+                            $petImage = !empty($pet->images) && is_array($pet->images) && count($pet->images) > 0 ? $pet->images[0] : null;
+                            $petImageExists = $petImage && @file_exists(public_path('storage/' . $petImage));
+                        @endphp
+                        @if ($petImageExists)
+                            <img src="{{ asset('storage/' . $petImage) }}" alt="{{ $pet->name }}"
                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @else
                             <img src="https://picsum.photos/300?random={{ $pet->id }}" alt="{{ $pet->name }}"
@@ -136,8 +144,12 @@
             @foreach ($pets->take(6) as $pet)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer">
                     <div class="aspect-[1/1] overflow-hidden rounded-md">
-                        @if (!empty($pet->images) && is_array($pet->images) && count($pet->images) > 0)
-                            <img src="{{ asset('storage/' . $pet->images[0]) }}" alt="{{ $pet->name }}"
+                        @php
+                            $petImage = !empty($pet->images) && is_array($pet->images) && count($pet->images) > 0 ? $pet->images[0] : null;
+                            $petImageExists = $petImage && @file_exists(public_path('storage/' . $petImage));
+                        @endphp
+                        @if ($petImageExists)
+                            <img src="{{ asset('storage/' . $petImage) }}" alt="{{ $pet->name }}"
                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                         @else
                             <img src="https://picsum.photos/300?random={{ $pet->id }}" alt="{{ $pet->name }}"

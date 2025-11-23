@@ -21,7 +21,7 @@
                                 <div class="text-center">
                                     <h3 class="text-base font-bold text-gray-800 mb-4">Ubah Foto Profil</h3>
                                     <img 
-                                        src="{{ 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) }}" 
+                                        src="{{ $user->avatar ? asset('storage/' . $user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) }}" 
                                         alt="Avatar"
                                         class="w-32 h-32 mx-auto rounded-lg object-cover border mb-4"
                                         id="avatar-preview"
@@ -60,7 +60,7 @@
                                             <input 
                                                 type="text" 
                                                 name="name" 
-                                                value="{{ old('name', Auth::user()->name) }}"
+                                                value="{{ old('name', $user->name) }}"
                                                 class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                 required
                                             >
@@ -74,8 +74,8 @@
                                         <div class="md:col-span-2">
                                             <input 
                                                 type="date" 
-                                                name="birth_date" 
-                                                value="{{ old('birth_date', Auth::user()->birth_date) }}"
+                                                name="birthday" 
+                                                value="{{ old('birthday', $user->birthday ? $user->birthday->format('Y-m-d') : '') }}"
                                                 class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                             >
                                             @error('birth_date')
@@ -88,11 +88,11 @@
                                         <div class="md:col-span-2">
                                             <div class="flex space-x-4">
                                                 <label class="flex items-center text-sm">
-                                                    <input type="radio" name="gender" value="Pria" {{ old('gender', Auth::user()->gender) == 'Pria' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
+                                                    <input type="radio" name="gender" value="Pria" {{ old('gender', $user->gender) == 'Pria' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
                                                     <span>Pria</span>
                                                 </label>
                                                 <label class="flex items-center text-sm">
-                                                    <input type="radio" name="gender" value="Wanita" {{ old('gender', Auth::user()->gender) == 'Wanita' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
+                                                    <input type="radio" name="gender" value="Wanita" {{ old('gender', $user->gender) == 'Wanita' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
                                                     <span>Wanita</span>
                                                 </label>
                                             </div>
@@ -107,7 +107,7 @@
                                                 <input 
                                                     type="email" 
                                                     name="email" 
-                                                    value="{{ old('email', Auth::user()->email) }}"
+                                                    value="{{ old('email', $user->email) }}"
                                                     class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                     required
                                                 >
@@ -125,7 +125,7 @@
                                                 <input 
                                                     type="text" 
                                                     name="phone" 
-                                                    value="{{ old('phone', Auth::user()->phone) }}"
+                                                    value="{{ old('phone', $user->phone) }}"
                                                     class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                 >
                                                 <span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded whitespace-nowrap">Terverifikasi</span>
@@ -156,47 +156,52 @@
                             </button>
                         </div>
                         <div class="space-y-4">
-                            <div class="bg-white border-2 border-orange-500 rounded-lg p-5 relative">
-                                <span class="absolute top-3 right-3 bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full font-semibold">Alamat Utama</span>
-                                <div class="mb-3">
-                                    <div class="flex items-start justify-between pr-24">
-                                        <div>
-                                            <h4 class="text-sm font-bold text-gray-800 mb-1">M FAISAL AKBAR</h4>
-                                            <p class="text-xs text-gray-600 mb-1">628986788877</p>
+                            @forelse($addresses as $address)
+                                <div class="bg-white border{{ $address->is_primary ? '-2 border-orange-500' : ' border-gray-300' }} rounded-lg p-5 relative">
+                                    @if($address->is_primary)
+                                        <span class="absolute top-3 right-3 bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full font-semibold">Alamat Utama</span>
+                                    @endif
+                                    <div class="mb-3">
+                                        <div class="flex items-start justify-between {{ $address->is_primary ? 'pr-24' : '' }}">
+                                            <div>
+                                                @if($address->label)
+                                                    <h4 class="text-sm font-bold text-gray-800 mb-1">{{ $address->label }}</h4>
+                                                @endif
+                                                <p class="text-sm font-semibold text-gray-800 mb-1">{{ $address->recipient_name ?? $user->name }}</p>
+                                                <p class="text-xs text-gray-600 mb-1">{{ $address->phone ?? $user->phone }}</p>
+                                            </div>
+                                            @if(!$address->is_primary)
+                                                <svg class="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                                </svg>
+                                            @endif
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-4">
-                                    <p class="text-sm text-gray-700" id="address-1">
-                                        <span class="address-full">Jl. Kenangan</span>
-                                    </p>
-                                </div>
-                                <div class="flex items-center space-x-4 text-sm">
-                                    <button type="button" onclick="openEditAddressModal(2)" class="text-orange-600 hover:text-orange-700 font-semibold">Ubah Alamat</button>
-                                </div>
-                            </div>
-                            <div class="bg-white border border-gray-300 rounded-lg p-5 relative">
-                                <div class="mb-3">
-                                    <div class="flex items-start justify-between">
-                                        <div>
-                                            <h4 class="text-sm font-bold text-gray-800 mb-1">Kantor</h4>
-                                            <p class="text-sm font-semibold text-gray-800 mb-1">M Faisal Akbar</p>
-                                            <p class="text-xs text-gray-600 mb-1">628986788877</p>
-                                        </div>
-                                        <svg class="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
+                                    <div class="mb-4">
+                                        <p class="text-sm text-gray-700">
+                                            {{ $address->street_address }}
+                                            @if($address->district), {{ $address->district }}@endif
+                                            @if($address->city), {{ $address->city }}@endif
+                                            @if($address->province), {{ $address->province }}@endif
+                                            @if($address->postal_code), {{ $address->postal_code }}@endif
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center space-x-4 text-sm">
+                                        <button type="button" onclick="openEditAddressModal({{ $address->id }})" class="text-orange-600 hover:text-orange-700 font-semibold">Ubah Alamat</button>
+                                        @if(!$address->is_primary)
+                                            <form action="#" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-700 font-semibold" onclick="return confirm('Hapus alamat ini?')">Hapus</button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="mb-4">
-                                    <p class="text-sm text-gray-700" id="address-2">
-                                        <span class="address-full">Jl. Soekarno Hatta</span>
-                                    </p>
+                            @empty
+                                <div class="text-center py-8 text-gray-500">
+                                    <p>Belum ada alamat tersimpan</p>
                                 </div>
-                                <div class="flex items-center space-x-4 text-sm">
-                                    <button type="button" onclick="openEditAddressModal(2)" class="text-orange-600 hover:text-orange-700 font-semibold">Ubah Alamat</button>
-                                </div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

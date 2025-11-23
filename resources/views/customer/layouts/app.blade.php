@@ -105,8 +105,7 @@
 
                             <a href="{{ route('customer.transactions') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Riwayat
                                 Transaksi</a>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pengaturan</a>
+                            <a href="{{ route('customer.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pengaturan</a>
 
                             <form method="POST" action="{{ route('customer.logout') }}">
                                 @csrf
