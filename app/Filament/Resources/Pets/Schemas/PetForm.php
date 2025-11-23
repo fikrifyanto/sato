@@ -22,7 +22,10 @@ class PetForm
                     ->columns()
                     ->schema([
                         TextInput::make('name')
-                            ->required(),
+                            ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ]),
                         TextInput::make('species'),
                         TextInput::make('age')
                             ->numeric()
@@ -34,7 +37,10 @@ class PetForm
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters([','])
                             ->prefix('IDR')
-                            ->required(),
+                            ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ]),
                         TextInput::make('breed'),
                         TextInput::make('color'),
                         TextInput::make('weight')

@@ -21,14 +21,23 @@ class ProductForm
                     ->columns()
                     ->schema([
                         TextInput::make('name')
-                            ->required(),
+                            ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ]),
                         TextInput::make('price')
                             ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ])
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters([','])
                             ->prefix('IDR'),
                         TextInput::make('stock')
                             ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ])
                             ->numeric(),
                         TextInput::make('category'),
                         FileUpload::make('image')

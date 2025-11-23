@@ -27,10 +27,16 @@ class CustomerForm
                             ->disk('public')
                             ->directory('customers'),
                         TextInput::make('name')
-                            ->required(),
+                            ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ]),
                         TextInput::make('email')
                             ->email()
-                            ->required(),
+                            ->required()
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ]),
                         TextInput::make('phone')
                             ->tel(),
                         DatePicker::make('birthday')
@@ -42,6 +48,9 @@ class CustomerForm
                             ->password()
                             ->confirmed()
                             ->required(fn ($livewire) => $livewire instanceof CreateRecord)
+                            ->extraInputAttributes([
+                                'required' => false,
+                            ])
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
                             ->dehydrated(fn ($state) => filled($state)),
                         TextInput::make('password_confirmation')
