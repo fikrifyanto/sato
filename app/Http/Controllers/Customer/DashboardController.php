@@ -191,7 +191,7 @@ class DashboardController extends Controller
         return view('customer.carts', compact('cartItems', 'subtotal', 'shippingCost', 'total'));
     }
 
-    public function transactions()
+    public function transactions(Request $request)
     {
         // Dummy Data
         $transactions = [
@@ -225,7 +225,30 @@ class DashboardController extends Controller
             ],
         ];
 
-        return view('customer.transactions', compact('transactions'));
+        $statusFilters = [
+            'all' => 'Semua',
+            'pending' => 'Berlangsung',
+            'completed' => 'Berhasil',
+            'cancelled' => 'Tidak Berhasil',
+        ];
+
+        $selectedStatus = $request->query('status', 'all');
+        if (!array_key_exists($selectedStatus, $statusFilters)) {
+            $selectedStatus = 'all';
+        }
+
+        $filteredTransactions = $selectedStatus === 'all'
+            ? $transactions
+            : array_values(array_filter(
+                $transactions,
+                fn($trx) => $trx['status'] === $selectedStatus
+            ));
+
+        return view('customer.transactions', [
+            'transactions' => $filteredTransactions,
+            'statusFilters' => $statusFilters,
+            'selectedStatus' => $selectedStatus,
+        ]);
     }
 
     public function transactionDetail($id)
