@@ -1,9 +1,54 @@
-@extends('customer.layouts.app')
+﻿@extends('customer.layouts.app')
 
 @section('content')
 <div class="min-h-screen pt-4">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
+            @if(session('success'))
+                <div id="floating-success-alert" class="pointer-events-none fixed right-6 top-6 z-50">
+                    <div class="pointer-events-auto flex items-start justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 shadow-lg" role="alert">
+                        <div class="flex items-start gap-3">
+                            <span class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <div>
+                                <p class="font-semibold">Berhasil</p>
+                                <p class="mt-1 text-emerald-700">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                        <button type="button" class="ml-4 text-emerald-500 transition hover:text-emerald-600" onclick="this.closest('[role=\'alert\']').remove()">
+                            <span class="sr-only">Tutup notifikasi</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                                <path fill-rule="evenodd" d="M5.22 5.22a.75.75 0 011.06 0L10 8.94l3.72-3.72a.75.75 0 111.06 1.06L11.06 10l3.72 3.72a.75.75 0 11-1.06 1.06L10 11.06l-3.72 3.72a.75.75 0 11-1.06-1.06L8.94 10 5.22 6.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            @endif
+            @php
+                $pictureUrl = $user->picture
+                    ? asset('storage/' . $user->picture)
+                    : 'https://ui-avatars.com/api/?name=' . urlencode($user->name);
+                $addressTypes = [
+                    'home' => 'Rumah',
+                    'shelter' => 'Shelter',
+                    'office' => 'Kantor',
+                    'other' => 'Lainnya',
+                ];
+                $birthdayValue = old('birthday');
+                if ($birthdayValue === null) {
+                    $birthdayAttribute = $user->birthday;
+                    if ($birthdayAttribute instanceof \Illuminate\Support\Carbon) {
+                        $birthdayValue = $birthdayAttribute->format('Y-m-d');
+                    } elseif (is_string($birthdayAttribute)) {
+                        $birthdayValue = $birthdayAttribute;
+                    } else {
+                        $birthdayValue = '';
+                    }
+                }
+            @endphp
             <div class="bg-white rounded-lg shadow-sm mb-6">
                 <div class="flex border-b overflow-x-auto">
                     <button class="tab-button active px-5 py-3 text-sm font-semibold text-orange-500 border-b-2 border-orange-500 whitespace-nowrap" data-tab="biodata">
@@ -20,21 +65,23 @@
                             <div class="md:col-span-1 space-y-6">
                                 <div class="text-center">
                                     <h3 class="text-base font-bold text-gray-800 mb-4">Ubah Foto Profil</h3>
-                                    <img 
-                                        src="{{ $user->avatar ? asset('storage/' . $user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) }}" 
-                                        alt="Avatar"
+                                    <img
+                                        src="{{ $pictureUrl }}"
+                                        alt="Foto Profil"
                                         class="w-32 h-32 mx-auto rounded-lg object-cover border mb-4"
-                                        id="avatar-preview"
+                                        id="picture-preview"
                                     >
-                                    <form action="#" method="POST" enctype="multipart/form-data" id="avatar-form">
-                                        @csrf
-                                        <label for="avatar-input" class="cursor-pointer inline-block bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold py-2 px-4 rounded-lg transition">
+                                    <div>
+                                        <label for="picture-input" class="cursor-pointer inline-block bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold py-2 px-4 rounded-lg transition">
                                             Pilih Foto
                                         </label>
-                                        <input type="file" name="avatar" id="avatar-input" class="hidden" accept="image/*">
+                                        <input type="file" name="picture" id="picture-input" class="hidden" accept="image/*" form="profile-form">
                                         <p class="text-xs text-gray-500 mt-2">Maksimum 10 MB</p>
                                         <p class="text-xs text-gray-500">Format: JPG, JPEG, PNG</p>
-                                    </form>
+                                        @error('picture')
+                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div>
                                     <button type="button" onclick="document.getElementById('password-modal').classList.remove('hidden')" class="w-full text-center bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold py-2.5 px-4 rounded-lg">
@@ -45,13 +92,7 @@
                             <div class="md:col-span-2">
                                 <h3 class="text-base font-bold text-gray-800 mb-6">Ubah Biodata Diri</h3>
                                 
-                                @if(session('success'))
-                                    <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-3 mb-4 text-sm">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-
-                                <form action="#" method="POST" class="space-y-5">
+                                <form id="profile-form" action="{{ route('customer.settings.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                                     @csrf
                                     @method('PUT')
                                     <div class="grid md:grid-cols-3 gap-4 items-start">
@@ -75,10 +116,10 @@
                                             <input 
                                                 type="date" 
                                                 name="birthday" 
-                                                value="{{ old('birthday', $user->birthday ? $user->birthday->format('Y-m-d') : '') }}"
+                                                value="{{ $birthdayValue }}"
                                                 class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                             >
-                                            @error('birth_date')
+                                            @error('birthday')
                                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                             @enderror
                                         </div>
@@ -88,14 +129,21 @@
                                         <div class="md:col-span-2">
                                             <div class="flex space-x-4">
                                                 <label class="flex items-center text-sm">
-                                                    <input type="radio" name="gender" value="Pria" {{ old('gender', $user->gender) == 'Pria' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
+                                                    <input type="radio" name="gender" value="male" {{ old('gender', $user->gender) === 'male' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
                                                     <span>Pria</span>
                                                 </label>
                                                 <label class="flex items-center text-sm">
-                                                    <input type="radio" name="gender" value="Wanita" {{ old('gender', $user->gender) == 'Wanita' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
+                                                    <input type="radio" name="gender" value="female" {{ old('gender', $user->gender) === 'female' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
                                                     <span>Wanita</span>
                                                 </label>
+                                                <label class="flex items-center text-sm">
+                                                    <input type="radio" name="gender" value="other" {{ old('gender', $user->gender) === 'other' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
+                                                    <span>Lainnya</span>
+                                                </label>
                                             </div>
+                                            @error('gender')
+                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                     <hr class="my-5">
@@ -157,44 +205,52 @@
                         </div>
                         <div class="space-y-4">
                             @forelse($addresses as $address)
-                                <div class="bg-white border{{ $address->is_primary ? '-2 border-orange-500' : ' border-gray-300' }} rounded-lg p-5 relative">
-                                    @if($address->is_primary)
-                                        <span class="absolute top-3 right-3 bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full font-semibold">Alamat Utama</span>
-                                    @endif
-                                    <div class="mb-3">
-                                        <div class="flex items-start justify-between {{ $address->is_primary ? 'pr-24' : '' }}">
-                                            <div>
-                                                @if($address->label)
-                                                    <h4 class="text-sm font-bold text-gray-800 mb-1">{{ $address->label }}</h4>
-                                                @endif
-                                                <p class="text-sm font-semibold text-gray-800 mb-1">{{ $address->recipient_name ?? $user->name }}</p>
-                                                <p class="text-xs text-gray-600 mb-1">{{ $address->phone ?? $user->phone }}</p>
-                                            </div>
-                                            @if(!$address->is_primary)
-                                                <svg class="w-6 h-6 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                                </svg>
+                                @php
+                                    $addressPayload = [
+                                        'id' => $address->id,
+                                        'type' => $address->type,
+                                        'label' => $address->label,
+                                        'province' => $address->province,
+                                        'city' => $address->city,
+                                        'district' => $address->district,
+                                        'postcode' => $address->postcode,
+                                        'detail' => $address->detail,
+                                        'notes' => $address->notes,
+                                    ];
+                                    $typeLabel = $addressTypes[$address->type] ?? ucfirst($address->type);
+                                @endphp
+                                <div
+                                    class="bg-white border border-gray-200 rounded-lg p-5 relative"
+                                    data-address-id="{{ $address->id }}"
+                                    data-address='@json($addressPayload)'
+                                    data-update-url="{{ route('customer.addresses.update', $address) }}"
+                                >
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            @if($address->label)
+                                                <h4 class="text-sm font-bold text-gray-800 mb-1">{{ $address->label }}</h4>
                                             @endif
+                                            <p class="text-xs font-semibold text-orange-600 uppercase tracking-wide">{{ $typeLabel }}</p>
                                         </div>
                                     </div>
-                                    <div class="mb-4">
+                                    <div class="mb-4 space-y-1">
+                                        @if($address->detail)
+                                            <p class="text-sm text-gray-700">{{ $address->detail }}</p>
+                                        @endif
                                         <p class="text-sm text-gray-700">
-                                            {{ $address->street_address }}
-                                            @if($address->district), {{ $address->district }}@endif
-                                            @if($address->city), {{ $address->city }}@endif
-                                            @if($address->province), {{ $address->province }}@endif
-                                            @if($address->postal_code), {{ $address->postal_code }}@endif
+                                            {{ $address->district }}, {{ $address->city }}, {{ $address->province }} {{ $address->postcode }}
                                         </p>
+                                        @if($address->notes)
+                                            <p class="text-xs text-gray-500">Catatan: {{ $address->notes }}</p>
+                                        @endif
                                     </div>
                                     <div class="flex items-center space-x-4 text-sm">
                                         <button type="button" onclick="openEditAddressModal({{ $address->id }})" class="text-orange-600 hover:text-orange-700 font-semibold">Ubah Alamat</button>
-                                        @if(!$address->is_primary)
-                                            <form action="#" method="POST" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-700 font-semibold" onclick="return confirm('Hapus alamat ini?')">Hapus</button>
-                                            </form>
-                                        @endif
+                                        <form action="{{ route('customer.addresses.destroy', $address) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-700 font-semibold" onclick="return confirm('Hapus alamat ini?')">Hapus</button>
+                                        </form>
                                     </div>
                                 </div>
                             @empty
@@ -219,7 +275,7 @@
                 </svg>
             </button>
         </div>
-        <form action="#" method="POST" class="space-y-4">
+        <form action="{{ route('customer.settings.password.update') }}" method="POST" class="space-y-4">
             @csrf
             @method('PUT')
             <div>
@@ -253,55 +309,55 @@
                     </svg>
                 </button>
             </div>
-            <form action="#" method="POST" class="space-y-4">
+            <form id="address-form" action="{{ route('customer.addresses.store') }}" method="POST" class="space-y-4">
                 @csrf
+                <div id="address-form-method-container"></div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Label Alamat <span class="text-red-500">*</span></label>
-                    <input type="text" name="label" placeholder="Contoh: Rumah, Kantor" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Jenis Alamat <span class="text-red-500">*</span></label>
+                    <select name="type" id="address-type" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <option value="">Pilih Jenis Alamat</option>
+                        @foreach($addressTypes as $typeValue => $typeName)
+                            <option value="{{ $typeValue }}">{{ $typeName }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Nama Penerima <span class="text-red-500">*</span></label>
-                    <input type="text" name="recipient_name" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Label Alamat</label>
+                    <input type="text" name="label" id="address-label" placeholder="Contoh: Rumah, Kantor" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Nomor HP <span class="text-red-500">*</span></label>
-                    <input type="text" name="phone" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
-                </div>
-                <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2">Alamat Lengkap <span class="text-red-500">*</span></label>
-                    <textarea name="address" rows="4" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required></textarea>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Detail Alamat</label>
+                    <textarea name="detail" id="address-detail" rows="3" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Provinsi <span class="text-red-500">*</span></label>
-                        <select name="province" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <select name="province" id="address-province" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
                             <option value="">Pilih Provinsi</option>
-                            <option value="jawa-timur">Jawa Timur</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Kota/Kabupaten <span class="text-red-500">*</span></label>
-                        <select name="city" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <select name="city" id="address-city" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
                             <option value="">Pilih Kota</option>
-                            <option value="malang">Malang</option>
                         </select>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Kecamatan <span class="text-red-500">*</span></label>
-                        <select name="district" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <select name="district" id="address-district" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
                             <option value="">Pilih Kecamatan</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Kode Pos <span class="text-red-500">*</span></label>
-                        <input type="text" name="postal_code" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <input type="text" name="postcode" id="address-postcode" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
                     </div>
                 </div>
-                <div class="flex items-center">
-                    <input type="checkbox" name="is_primary" id="is_primary" class="mr-2">
-                    <label for="is_primary" class="text-sm text-gray-700">Jadikan alamat utama</label>
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Catatan</label>
+                    <textarea name="notes" id="address-notes" rows="2" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
                 </div>
                 <div class="flex space-x-3 pt-2">
                     <button type="button" onclick="closeAddressModal()" class="flex-1 px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">Batal</button>
@@ -315,49 +371,225 @@
 
 @section('scripts')
 <script>
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active', 'text-orange-500', 'border-b-2', 'border-orange-500');
-                btn.classList.add('text-gray-600');
-            });
-            
-            this.classList.add('active', 'text-orange-500', 'border-b-2', 'border-orange-500');
-            this.classList.remove('text-gray-600');
-            
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            
-            const tabId = this.getAttribute('data-tab') + '-tab';
-            document.getElementById(tabId).classList.remove('hidden');
+    const regionsData = @json($regions);
+    const normalizedRegions = Array.isArray(regionsData) ? regionsData : [];
+
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const pictureInput = document.getElementById('picture-input');
+    const picturePreview = document.getElementById('picture-preview');
+
+    const addressModal = document.getElementById('address-modal');
+    const addressForm = document.getElementById('address-form');
+    const methodContainer = document.getElementById('address-form-method-container');
+    const floatingAlert = document.getElementById('floating-success-alert');
+    if (floatingAlert) {
+        setTimeout(() => {
+            floatingAlert.remove();
+        }, 4000);
+    }
+
+    const provinceSelect = document.getElementById('address-province');
+    const citySelect = document.getElementById('address-city');
+    const districtSelect = document.getElementById('address-district');
+    const typeSelect = document.getElementById('address-type');
+    const labelInput = document.getElementById('address-label');
+    const detailInput = document.getElementById('address-detail');
+    const postcodeInput = document.getElementById('address-postcode');
+    const notesInput = document.getElementById('address-notes');
+    const storeAddressUrl = '{{ route('customer.addresses.store') }}';
+
+    function handleTabClick(event) {
+        const target = event.currentTarget;
+
+        tabButtons.forEach(btn => {
+            btn.classList.remove('active', 'text-orange-500', 'border-b-2', 'border-orange-500');
+            btn.classList.add('text-gray-600');
         });
+
+        target.classList.add('active', 'text-orange-500', 'border-b-2', 'border-orange-500');
+        target.classList.remove('text-gray-600');
+
+        const selectedTab = `${target.dataset.tab}-tab`;
+
+        tabContents.forEach(content => {
+            content.classList.toggle('hidden', content.id !== selectedTab);
+        });
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', handleTabClick);
     });
 
-    document.getElementById('avatar-input').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('avatar-preview').src = e.target.result;
+    if (pictureInput) {
+        pictureInput.addEventListener('change', event => {
+            const [file] = event.target.files;
+
+            if (file && picturePreview) {
+                const reader = new FileReader();
+                reader.onload = loadEvent => {
+                    picturePreview.src = loadEvent.target.result;
+                };
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
-            document.getElementById('avatar-form').submit();
+        });
+    }
+
+    function populateProvinces(selected = '') {
+        if (!provinceSelect) {
+            return;
         }
+
+        provinceSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
+
+        normalizedRegions.forEach(province => {
+            const option = document.createElement('option');
+            option.value = province.code;
+            option.textContent = province.name;
+            provinceSelect.appendChild(option);
+        });
+
+        if (selected) {
+            provinceSelect.value = selected;
+        }
+    }
+
+    function populateCities(provinceCode, selected = '') {
+        if (!citySelect || !districtSelect) {
+            return;
+        }
+
+        citySelect.innerHTML = '<option value="">Pilih Kota</option>';
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+
+        if (!provinceCode) {
+            return;
+        }
+
+        const province = normalizedRegions.find(item => item.code === provinceCode);
+
+        if (!province || !Array.isArray(province.cities)) {
+            return;
+        }
+
+        province.cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.code;
+            option.textContent = city.name;
+            citySelect.appendChild(option);
+        });
+
+        if (selected) {
+            citySelect.value = selected;
+        }
+    }
+
+    function populateDistricts(provinceCode, cityCode, selected = '') {
+        if (!districtSelect) {
+            return;
+        }
+
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+
+        if (!provinceCode || !cityCode) {
+            return;
+        }
+
+        const province = normalizedRegions.find(item => item.code === provinceCode);
+        const city = province?.cities?.find(item => item.code === cityCode);
+
+        if (!city || !Array.isArray(city.districts)) {
+            return;
+        }
+
+        city.districts.forEach(district => {
+            const option = document.createElement('option');
+            option.value = district.code;
+            option.textContent = district.name;
+            districtSelect.appendChild(option);
+        });
+
+        if (selected) {
+            districtSelect.value = selected;
+        }
+    }
+
+    provinceSelect?.addEventListener('change', () => {
+        populateCities(provinceSelect.value);
+    });
+
+    citySelect?.addEventListener('change', () => {
+        populateDistricts(provinceSelect.value, citySelect.value);
     });
 
     function openAddAddressModal() {
+        if (!addressForm || !addressModal) {
+            return;
+        }
+
+        addressForm.reset();
+        methodContainer.innerHTML = '';
+        addressForm.action = storeAddressUrl;
+
+        populateProvinces();
+        citySelect.innerHTML = '<option value="">Pilih Kota</option>';
+        districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+
         document.getElementById('address-modal-title').textContent = 'Tambah Alamat Baru';
-        document.getElementById('address-modal').classList.remove('hidden');
+        addressModal.classList.remove('hidden');
     }
 
     function openEditAddressModal(addressId) {
+        if (!addressForm || !addressModal) {
+            return;
+        }
+
+        const card = document.querySelector(`[data-address-id="${addressId}"]`);
+
+        if (!card) {
+            return;
+        }
+
+        let payload = null;
+
+        try {
+            payload = card.dataset.address ? JSON.parse(card.dataset.address) : null;
+        } catch (error) {
+            payload = null;
+        }
+
+        if (!payload) {
+            return;
+        }
+
+        addressForm.action = card.dataset.updateUrl;
+        methodContainer.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+
         document.getElementById('address-modal-title').textContent = 'Ubah Alamat';
-        document.getElementById('address-modal').classList.remove('hidden');
+
+        populateProvinces(payload.province ?? '');
+        populateCities(payload.province ?? '', payload.city ?? '');
+        populateDistricts(payload.province ?? '', payload.city ?? '', payload.district ?? '');
+
+        typeSelect.value = payload.type ?? '';
+        labelInput.value = payload.label ?? '';
+        detailInput.value = payload.detail ?? '';
+        postcodeInput.value = payload.postcode ?? '';
+        notesInput.value = payload.notes ?? '';
+
+        addressModal.classList.remove('hidden');
     }
 
     function closeAddressModal() {
-        document.getElementById('address-modal').classList.add('hidden');
+        if (addressModal) {
+            addressModal.classList.add('hidden');
+        }
     }
+
+    window.openAddAddressModal = openAddAddressModal;
+    window.openEditAddressModal = openEditAddressModal;
+    window.closeAddressModal = closeAddressModal;
+
+    populateProvinces();
 </script>
 @endsection

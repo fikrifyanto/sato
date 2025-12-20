@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Models\Customer;
-use App\Models\Address;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -17,16 +13,22 @@ class ProfileController extends Controller
     public function edit() {
         $user = auth()->user();
         $addresses = $user->addresses;
-        return view('profile.edit', compact('user', 'addresses'));
+        $regions = $this->loadRegions();
+
+        return view('profile.edit', compact('user', 'addresses', 'regions'));
     }
 
     public function update(UpdateProfileRequest $request) {
         $user = $request->user();
         $data = $request->validated();
         // Avatar upload
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar) Storage::disk('public')->delete($user->avatar);
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        if ($request->hasFile('picture')) {
+            if ($user->picture) {
+                Storage::disk('public')->delete($user->picture);
+            }
+            $data['picture'] = $request->file('picture')->store('avatars', 'public');
+        } else {
+            unset($data['picture']);
         }
         $user->update($data);
         return back()->with('success', 'Profile updated!');
@@ -39,5 +41,18 @@ class ProfileController extends Controller
         }
         $user->update(['password' => Hash::make($request->password)]);
         return back()->with('success', 'Password updated!');
+    }
+
+    private function loadRegions(): array
+    {
+        $path = resource_path('data/regions.json');
+
+        if (! is_file($path)) {
+            return [];
+        }
+
+        $payload = json_decode(file_get_contents($path), true);
+
+        return $payload['provinces'] ?? [];
     }
 }
