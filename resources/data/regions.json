@@ -1,0 +1,202 @@
+{
+  "provinces": [
+    {
+      "code": "dki-jakarta",
+      "name": "DKI Jakarta",
+      "cities": [
+        {
+          "code": "jakarta-selatan",
+          "name": "Jakarta Selatan",
+          "districts": [
+            {"code": "kebayoran-baru", "name": "Kebayoran Baru"},
+            {"code": "tebet", "name": "Tebet"},
+            {"code": "cilandak", "name": "Cilandak"}
+          ]
+        },
+        {
+          "code": "jakarta-timur",
+          "name": "Jakarta Timur",
+          "districts": [
+            {"code": "cakung", "name": "Cakung"},
+            {"code": "pulo-gadung", "name": "Pulo Gadung"},
+            {"code": "matraman", "name": "Matraman"}
+          ]
+        },
+        {
+          "code": "jakarta-barat",
+          "name": "Jakarta Barat",
+          "districts": [
+            {"code": "palmerah", "name": "Palmerah"},
+            {"code": "kebon-jeruk", "name": "Kebon Jeruk"},
+            {"code": "taman-sari", "name": "Taman Sari"}
+          ]
+        }
+      ]
+    },
+    {
+      "code": "jawa-barat",
+      "name": "Jawa Barat",
+      "cities": [
+        {
+          "code": "bandung",
+          "name": "Bandung",
+          "districts": [
+            {"code": "coblong", "name": "Coblong"},
+            {"code": "sukajadi", "name": "Sukajadi"},
+            {"code": "lengkong", "name": "Lengkong"}
+          ]
+        },
+        {
+          "code": "bekasi",
+          "name": "Bekasi",
+          "districts": [
+            {"code": "bekasi-barat", "name": "Bekasi Barat"},
+            {"code": "bekasi-timur", "name": "Bekasi Timur"},
+            {"code": "jatisampurna", "name": "Jatisampurna"}
+          ]
+        },
+        {
+          "code": "depok",
+          "name": "Depok",
+          "districts": [
+            {"code": "beji", "name": "Beji"},
+            {"code": "sawangan", "name": "Sawangan"},
+            {"code": "cimanggis", "name": "Cimanggis"}
+          ]
+        }
+      ]
+    },
+    {
+      "code": "jawa-timur",
+      "name": "Jawa Timur",
+      "cities": [
+        {
+          "code": "surabaya",
+          "name": "Surabaya",
+          "districts": [
+            {"code": "tegalsari", "name": "Tegalsari"},
+            {"code": "wonokromo", "name": "Wonokromo"},
+            {"code": "rungkut", "name": "Rungkut"}
+          ]
+        },
+        {
+          "code": "malang",
+          "name": "Malang",
+          "districts": [
+            {"code": "klojen", "name": "Klojen"},
+            {"code": "blimbing", "name": "Blimbing"},
+            {"code": "lowokwaru", "name": "Lowokwaru"}
+          ]
+        },
+        {
+          "code": "kediri",
+          "name": "Kediri",
+          "districts": [
+            {"code": "mojoroto", "name": "Mojoroto"},
+            {"code": "pesantren", "name": "Pesantren"},
+            {"code": "kediri-kota", "name": "Kediri Kota"}
+          ]
+        }
+      ]
+    },
+    {
+      "code": "banten",
+      "name": "Banten",
+      "cities": [
+        {
+          "code": "tangerang",
+          "name": "Tangerang",
+          "districts": [
+            {"code": "ciledug", "name": "Ciledug"},
+            {"code": "karawaci", "name": "Karawaci"},
+            {"code": "cipondoh", "name": "Cipondoh"}
+          ]
+        },
+        {
+          "code": "serang",
+          "name": "Serang",
+          "districts": [
+            {"code": "kasemen", "name": "Kasemen"},
+            {"code": "taktakan", "name": "Taktakan"},
+            {"code": "cipocok-jaya", "name": "Cipocok Jaya"}
+          ]
+        },
+        {
+          "code": "cilegon",
+          "name": "Cilegon",
+          "districts": [
+            {"code": "ciwandan", "name": "Ciwandan"},
+            {"code": "cibeber", "name": "Cibeber"},
+            {"code": "pulomerak", "name": "Pulomerak"}
+          ]
+        }
+      ]
+    },
+    {
+      "code": "di-yogyakarta",
+      "name": "DI Yogyakarta",
+      "cities": [
+        {
+          "code": "yogyakarta",
+          "name": "Yogyakarta",
+          "districts": [
+            {"code": "gondokusuman", "name": "Gondokusuman"},
+            {"code": "jetis", "name": "Jetis"},
+            {"code": "umbulharjo", "name": "Umbulharjo"}
+          ]
+        },
+        {
+          "code": "sleman",
+          "name": "Sleman",
+          "districts": [
+            {"code": "depok-sleman", "name": "Depok"},
+            {"code": "mlati", "name": "Mlati"},
+            {"code": "ngaglik", "name": "Ngaglik"}
+          ]
+        },
+        {
+          "code": "bantul",
+          "name": "Bantul",
+          "districts": [
+            {"code": "banguntapan", "name": "Banguntapan"},
+            {"code": "kasihan", "name": "Kasihan"},
+            {"code": "sedayu", "name": "Sedayu"}
+          ]
+        }
+      ]
+    },
+    {
+      "code": "jawa-tengah",
+      "name": "Jawa Tengah",
+      "cities": [
+        {
+          "code": "semarang",
+          "name": "Semarang",
+          "districts": [
+            {"code": "candisari", "name": "Candisari"},
+            {"code": "pedurungan", "name": "Pedurungan"},
+            {"code": "gayamsari", "name": "Gayamsari"}
+          ]
+        },
+        {
+          "code": "surakarta",
+          "name": "Surakarta",
+          "districts": [
+            {"code": "banjarsari", "name": "Banjarsari"},
+            {"code": "laweyan", "name": "Laweyan"},
+            {"code": "jebres", "name": "Jebres"}
+          ]
+        },
+        {
+          "code": "magelang",
+          "name": "Magelang",
+          "districts": [
+            {"code": "magelang-utara", "name": "Magelang Utara"},
+            {"code": "magelang-tengah", "name": "Magelang Tengah"},
+            {"code": "magelang-selatan", "name": "Magelang Selatan"}
+          ]
+        }
+      ]
+    }
+  ]
+}

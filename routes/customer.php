@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Customer\AuthController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProfileController;
+use App\Http\Controllers\Customer\AddressController;
 
 // Semua URL customer diawali dengan /customer
 Route::prefix('customer')->name('customer.')->group(function () {
@@ -40,5 +41,7 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::get('/settings', [ProfileController::class, 'edit'])->name('settings');
         Route::put('/settings/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
         Route::put('/settings/password', [ProfileController::class, 'updatePassword'])->name('settings.password.update');
+
+        Route::resource('addresses', AddressController::class)->only(['store', 'update', 'destroy']);
     });
 });
