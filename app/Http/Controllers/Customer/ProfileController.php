@@ -36,10 +36,13 @@ class ProfileController extends Controller
 
     public function updatePassword(UpdatePasswordRequest $request) {
         $user = $request->user();
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Current password salah']);
+
+        if (! Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password lama tidak sesuai.'], 'password');
         }
+
         $user->update(['password' => Hash::make($request->password)]);
+
         return back()->with('success', 'Password updated!');
     }
 

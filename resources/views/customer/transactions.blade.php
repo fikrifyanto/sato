@@ -102,23 +102,15 @@
                     <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                         <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
                             <div class="flex items-center gap-3 text-xs text-gray-500">
-                                <span class="inline-flex items-center gap-2 text-gray-600">
-                                    <svg class="h-5 w-5 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M3.75 4.5h2.25l1.5 12h9l1.5-9h-12" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M11 19.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
-                                    </svg>
-                                    Belanja
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $meta['badge'] }}">
+                                    <span class="h-2 w-2 rounded-full {{ $meta['dot'] }}"></span>
+                                    {{ $meta['label'] }}
                                 </span>
                                 <span class="text-gray-300">•</span>
                                 <span>{{ \Carbon\Carbon::parse($trx['date'])->translatedFormat('d M Y') }}</span>
                                 <span class="text-gray-300">•</span>
                                 <span>{{ $trx['id'] }}</span>
                             </div>
-
-                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $meta['badge'] }}">
-                                <span class="h-2 w-2 rounded-full {{ $meta['dot'] }}"></span>
-                                {{ $meta['label'] }}
-                            </span>
                         </div>
 
                         <div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
