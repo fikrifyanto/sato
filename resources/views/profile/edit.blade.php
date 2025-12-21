@@ -64,7 +64,6 @@
                         <div class="grid md:grid-cols-3 gap-8">
                             <div class="md:col-span-1 space-y-6">
                                 <div class="text-center">
-                                    <h3 class="text-base font-bold text-gray-800 mb-4">Ubah Foto Profil</h3>
                                     <img
                                         src="{{ $pictureUrl }}"
                                         alt="Foto Profil"
@@ -136,10 +135,6 @@
                                                     <input type="radio" name="gender" value="female" {{ old('gender', $user->gender) === 'female' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
                                                     <span>Wanita</span>
                                                 </label>
-                                                <label class="flex items-center text-sm">
-                                                    <input type="radio" name="gender" value="other" {{ old('gender', $user->gender) === 'other' ? 'checked' : '' }} class="mr-2 text-orange-500 focus:ring-orange-400">
-                                                    <span>Lainnya</span>
-                                                </label>
                                             </div>
                                             @error('gender')
                                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -159,7 +154,6 @@
                                                     class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                     required
                                                 >
-                                                <span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded whitespace-nowrap">Terverifikasi</span>
                                             </div>
                                             @error('email')
                                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -176,7 +170,6 @@
                                                     value="{{ old('phone', $user->phone) }}"
                                                     class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                 >
-                                                <span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded whitespace-nowrap">Terverifikasi</span>
                                             </div>
                                             @error('phone')
                                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -280,15 +273,25 @@
             @method('PUT')
             <div>
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Password Lama</label>
-                <input type="password" name="current_password" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                <input type="password" name="current_password" id="modal-current-password" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                @error('current_password', 'password')
+                    <p id="current-password-server-error" class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Password Baru</label>
-                <input type="password" name="password" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                <input type="password" name="password" id="modal-password" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                @error('password', 'password')
+                    <p id="password-server-error" class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div>
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Konfirmasi Password Baru</label>
-                <input type="password" name="password_confirmation" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                <input type="password" name="password_confirmation" id="modal-password-confirmation" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                <p id="modal-password-match-message" class="mt-1 text-xs hidden"></p>
+                @error('password_confirmation', 'password')
+                    <p id="password-confirmation-server-error" class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div class="flex space-x-3 pt-2">
                 <button type="button" onclick="document.getElementById('password-modal').classList.add('hidden')" class="flex-1 px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">Batal</button>
@@ -378,6 +381,15 @@
     const tabContents = document.querySelectorAll('.tab-content');
     const pictureInput = document.getElementById('picture-input');
     const picturePreview = document.getElementById('picture-preview');
+    const passwordModalElement = document.getElementById('password-modal');
+    const shouldOpenPasswordModal = @json($errors->password->any());
+    const currentPasswordInput = document.getElementById('modal-current-password');
+    const passwordInput = document.getElementById('modal-password');
+    const passwordConfirmationInput = document.getElementById('modal-password-confirmation');
+    const passwordMatchMessage = document.getElementById('modal-password-match-message');
+    const currentPasswordServerError = document.getElementById('current-password-server-error');
+    const passwordServerError = document.getElementById('password-server-error');
+    const passwordConfirmationServerError = document.getElementById('password-confirmation-server-error');
 
     const addressModal = document.getElementById('address-modal');
     const addressForm = document.getElementById('address-form');
@@ -388,6 +400,70 @@
             floatingAlert.remove();
         }, 4000);
     }
+
+    if (shouldOpenPasswordModal && passwordModalElement) {
+        passwordModalElement.classList.remove('hidden');
+    }
+
+    const resetConfirmationVisualState = () => {
+        if (!passwordConfirmationInput || !passwordMatchMessage) {
+            return;
+        }
+
+        passwordMatchMessage.textContent = '';
+        passwordMatchMessage.classList.add('hidden');
+        passwordMatchMessage.classList.remove('text-red-600', 'text-green-600');
+        passwordConfirmationInput.classList.remove('border-red-500', 'border-green-500');
+        passwordConfirmationInput.classList.add('border-gray-300');
+    };
+
+    const updatePasswordMatchFeedback = () => {
+        if (!passwordInput || !passwordConfirmationInput || !passwordMatchMessage) {
+            return;
+        }
+
+        passwordServerError?.classList.add('hidden');
+        passwordConfirmationServerError?.classList.add('hidden');
+
+        const passwordValue = passwordInput.value;
+        const confirmationValue = passwordConfirmationInput.value;
+
+        if (confirmationValue.length === 0) {
+            resetConfirmationVisualState();
+            return;
+        }
+
+        passwordMatchMessage.classList.remove('hidden');
+        passwordConfirmationInput.classList.remove('border-gray-300');
+
+        if (passwordValue === confirmationValue) {
+            passwordMatchMessage.textContent = 'Password cocok';
+            passwordMatchMessage.classList.remove('text-red-600');
+            passwordMatchMessage.classList.add('text-green-600');
+            passwordConfirmationInput.classList.remove('border-red-500');
+            passwordConfirmationInput.classList.add('border-green-500');
+        } else {
+            passwordMatchMessage.textContent = 'Password tidak cocok';
+            passwordMatchMessage.classList.remove('text-green-600');
+            passwordMatchMessage.classList.add('text-red-600');
+            passwordConfirmationInput.classList.remove('border-green-500');
+            passwordConfirmationInput.classList.add('border-red-500');
+        }
+    };
+
+    currentPasswordInput?.addEventListener('input', () => {
+        currentPasswordServerError?.classList.add('hidden');
+    });
+
+    passwordInput?.addEventListener('input', () => {
+        passwordServerError?.classList.add('hidden');
+        updatePasswordMatchFeedback();
+    });
+
+    passwordConfirmationInput?.addEventListener('input', () => {
+        passwordConfirmationServerError?.classList.add('hidden');
+        updatePasswordMatchFeedback();
+    });
 
     const provinceSelect = document.getElementById('address-province');
     const citySelect = document.getElementById('address-city');
