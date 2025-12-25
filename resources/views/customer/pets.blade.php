@@ -1,7 +1,7 @@
 @extends('customer.layouts.app')
 
 @section('content')
-<div x-data="petFilter()" class="flex flex-col md:flex-row gap-6 px-6 py-8">
+<div x-data="petFilter()" class="flex flex-col md:flex-row gap-6">
 
     {{-- SIDEBAR FILTER --}}
     <aside class="w-full md:w-1/4 bg-white rounded-xl shadow p-4 h-fit">
@@ -80,21 +80,22 @@
     <main class="flex-1">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Pilih Teman Terbaikmu</h2>
 
-        <div class="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-4 gap-4">
             <template x-for="pet in filteredPets()" :key="pet.id">
-                <div @click="window.location.href='/customer/pets/' + pet.id" class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer flex flex-col justify-between">
+                <div @click="window.location.href='{{ route('pets') }}/' + pet.id" class="bg-white rounded-lg shadow hover:shadow-md transition p-3 cursor-pointer flex flex-col justify-between">
                     <div class="aspect-[1/1] overflow-hidden rounded-md">
                         <img :src="pet.image" :alt="pet.name" loading="lazy"
                              class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="mt-2">
                         <h3 class="text-sm font-medium text-gray-800 line-clamp-2" x-text="pet.name"></h3>
-                        <p class="text-xs text-gray-500 mt-1" x-text="'Spesies: ' + pet.species"></p>
-                        <p class="text-xs text-gray-500" x-text="'Jenis: ' + pet.breed"></p>
-                        <p class="text-xs text-gray-500" x-text="'Vaksin: ' + pet.vaccinated"></p>
+                        <p class="text-xs text-gray-500 mt-1" x-text="pet.species + ' • ' + pet.gender"></p>
                         <p class="text-base font-semibold text-orange-600 mt-1">
                             Rp<span x-text="formatNumber(pet.price)"></span>
                         </p>
+                        <button class="py-2 px-4 shadow-sm rounded-md bg-primary text-sm text-white w-full mt-4">
+                            Adopsi
+                        </button>
                     </div>
                 </div>
             </template>

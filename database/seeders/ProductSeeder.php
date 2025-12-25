@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductSeeder extends Seeder
 {
@@ -14,57 +17,42 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('products')->insert([
-            [
-                'product_name' => 'Makanan Kucing Whiskas',
-                'description' => 'Makanan bergizi tinggi untuk kucing dewasa dengan rasa tuna.',
-                'price' => 50000,
-                'stock' => 20,
-                'category' => 'Makanan Hewan',
-                'image' => 'images/whiskas.jpg',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_name' => 'Pasir Kucing Gumpal 10kg',
-                'description' => 'Pasir wangi dengan daya serap tinggi, cocok untuk menjaga kebersihan kandang.',
-                'price' => 80000,
-                'stock' => 15,
-                'category' => 'Perlengkapan Hewan',
-                'image' => 'images/pasir-kucing.jpg',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_name' => 'Pet Carrier',
-                'description' => 'Tas pembawa hewan peliharaan yang kuat dan nyaman untuk perjalanan.',
-                'price' => 150000,
-                'stock' => 10,
-                'category' => 'Perlengkapan Hewan',
-                'image' => 'images/pet-carrier.jpg',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_name' => 'Kalung Anjing Lucu',
-                'description' => 'Aksesori nyaman dan kuat untuk anjing kecil maupun besar.',
-                'price' => 25000,
-                'stock' => 25,
-                'category' => 'Aksesori Hewan',
-                'image' => 'images/kalung-anjing.jpg',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_name' => 'Shampoo Kucing Anti Kutu',
-                'description' => 'Membersihkan bulu sekaligus melindungi kucing dari kutu dan jamur.',
-                'price' => 35000,
-                'stock' => 18,
-                'category' => 'Perawatan Hewan',
-                'image' => 'images/shampoo-kucing.jpg',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        Product::factory()
+            ->count(20)
+            ->state(new Sequence(
+                fn($sequence) => [
+                    'price' => 25_000 + ($sequence->index * 10_000),
+                ]
+            ))
+            ->create()
+            ->each(function (Product $product) {
+
+                $category = $product->category == 'Makanan Hewan' ? 'pet_food' : 'pet_accessory';
+                $sourcePath = database_path("seeders/images/products/{$category}");
+
+                if (!is_dir($sourcePath)) return;
+
+                $files = collect(scandir($sourcePath))
+                    ->reject(fn($f) => in_array($f, ['.', '..']));
+
+                if ($files->isEmpty()) return;
+
+                $images = [];
+                $selectedFiles = $files->random(min(2, $files->count()));
+
+                foreach ($selectedFiles as $file) {
+                    $fileName = uniqid() . '-' . $file;
+                    $storagePath = "products/{$category}/{$fileName}";
+
+                    Storage::disk('public')->put(
+                        $storagePath,
+                        file_get_contents($sourcePath . '/' . $file)
+                    );
+
+                    $images[] = $storagePath;
+                }
+
+                $product->update(['images' => $images]);
+            });
     }
 }

@@ -20,7 +20,7 @@ class AddressController extends Controller
             ])
         );
 
-        return redirect()->route('customer.settings')->with('success', 'Alamat berhasil ditambahkan.');
+        return redirect()->route('settings')->with('success', 'Alamat berhasil ditambahkan.');
     }
 
     public function update(UpsertAddressRequest $request, Address $address): RedirectResponse
@@ -29,7 +29,7 @@ class AddressController extends Controller
 
         $address->update($request->validated());
 
-        return redirect()->route('customer.settings')->with('success', 'Alamat berhasil diperbarui.');
+        return redirect()->route('settings')->with('success', 'Alamat berhasil diperbarui.');
     }
 
     public function destroy(Request $request, Address $address): RedirectResponse
@@ -38,7 +38,7 @@ class AddressController extends Controller
 
         $address->delete();
 
-        return redirect()->route('customer.settings')->with('success', 'Alamat berhasil dihapus.');
+        return redirect()->route('settings')->with('success', 'Alamat berhasil dihapus.');
     }
 
     private function ensureOwnership(int $customerId, Address $address): void

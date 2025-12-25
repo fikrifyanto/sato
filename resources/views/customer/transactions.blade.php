@@ -25,7 +25,7 @@
     @endphp
 
     <div class="bg-white border border-gray-200 rounded-3xl shadow-sm">
-        <form method="GET" action="{{ route('customer.transactions') }}" class="px-6 py-6 space-y-5">
+        <form method="GET" action="{{ route('transactions') }}" class="px-6 py-6 space-y-5">
             <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_220px]">
                 <label class="flex flex-col gap-2">
                     <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Cari transaksi</span>
@@ -78,7 +78,7 @@
 
                 @if(request()->hasAny(['status', 'search', 'product']))
                     <a
-                        href="{{ route('customer.transactions') }}"
+                        href="{{ route('transactions') }}"
                         class="ml-auto text-sm font-medium text-orange-500 hover:text-orange-600"
                     >
                         Reset Filter
@@ -116,10 +116,10 @@
                         <div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
                             <div class="text-right sm:text-left">
                                 <p class="text-xs text-gray-500 uppercase tracking-wide">Total Belanja</p>
-                                <p class="text-base font-semibold text-gray-900">Rp{{ number_format($trx['total'], 0, ',', '.') }}</p>
+                                <p class="text-base font-semibold text-gray-900">Rp {{ number_format($trx['total'], 0, ',', '.') }}</p>
                             </div>
                             <a
-                                href="{{ route('customer.products') }}"
+                                href="{{ route('products') }}"
                                 class="whitespace-nowrap rounded-full border border-orange-200 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50"
                             >
                                 Beli Lagi
@@ -142,7 +142,7 @@
                                     @endif
                                 </p>
                                 @if($firstItem)
-                                    <p class="text-xs text-gray-500">{{ $firstItem['qty'] }} barang x Rp{{ number_format($firstItem['price'], 0, ',', '.') }}</p>
+                                    <p class="text-xs text-gray-500">{{ $firstItem['qty'] }} barang x Rp {{ number_format($firstItem['price'], 0, ',', '.') }}</p>
                                 @endif
                                 <p class="mt-2 text-xs text-gray-400">Pembayaran melalui metode virtual account.</p>
                             </div>
@@ -150,7 +150,7 @@
 
                         <div class="flex items-center gap-3">
                             <a
-                                href="{{ route('customer.transaction_detail', ['id' => $trx['id']]) }}"
+                                href="{{ route('transaction_detail', ['id' => $trx['id']]) }}"
                                 class="whitespace-nowrap rounded-full border border-orange-500 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50"
                             >
                                 Lihat Detail Transaksi

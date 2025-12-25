@@ -20,12 +20,11 @@ class AuthController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ], [
             'email.required'    => 'Email wajib diisi.',
             'email.email'       => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
-            'password.min'      => 'Password minimal 6 karakter.',
         ]);
 
         if ($validator->fails()) {
@@ -38,7 +37,7 @@ class AuthController extends Controller
 
         // Coba login
         if (Auth::guard('customer')->attempt($credentials)) {
-            return redirect()->route('customer.dashboard');
+            return redirect()->route('dashboard');
         }
 
         // Jika gagal login
@@ -86,12 +85,12 @@ class AuthController extends Controller
         // Login otomatis
         Auth::guard('customer')->login($customer);
 
-        return redirect()->route('customer.dashboard');
+        return redirect()->route('dashboard');
     }
 
     public function logout()
     {
         Auth::guard('customer')->logout();
-        return redirect()->route('customer.login');
+        return redirect()->route('login');
     }
 }
