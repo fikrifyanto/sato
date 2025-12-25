@@ -94,7 +94,6 @@ class DashboardController extends Controller
                 'image' => !empty($p->images)
                     ? asset('storage/' . (is_array($p->images) ? $p->images[0] : $p->images))
                     : 'https://picsum.photos/300?random=' . $p->id,
-                'stock' => $p->status === 'available' ? 'in' : 'out',
             ];
         });
 

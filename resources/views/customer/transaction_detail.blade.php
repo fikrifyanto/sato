@@ -64,7 +64,7 @@
             <p class="text-sm text-gray-500 mt-1">Tinjau ringkasan dan rincian pesanan Anda.</p>
         </div>
         <a
-            href="{{ route('customer.transactions') }}"
+            href="{{ route('transactions') }}"
             class="hidden md:inline-flex items-center gap-2 rounded-full border border-orange-200 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50"
         >
             <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,10 +93,10 @@
                 <div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="text-left sm:text-right">
                         <p class="text-xs text-gray-500 uppercase tracking-wide">Total Belanja</p>
-                        <p class="text-xl font-semibold text-gray-900">Rp{{ number_format($transaction['payment']['total'], 0, ',', '.') }}</p>
+                        <p class="text-xl font-semibold text-gray-900">Rp {{ number_format($transaction['payment']['total'], 0, ',', '.') }}</p>
                     </div>
                     <a
-                        href="{{ route('customer.products') }}"
+                        href="{{ route('products') }}"
                         class="whitespace-nowrap rounded-full border border-orange-200 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50"
                     >
                         Beli Lagi
@@ -121,7 +121,7 @@
                                     <p class="text-xs text-gray-500">Jumlah: {{ $item['qty'] }}</p>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-sm font-semibold text-gray-900">Rp{{ number_format($item['price'], 0, ',', '.') }}</p>
+                                    <p class="text-sm font-semibold text-gray-900">Rp {{ number_format($item['price'], 0, ',', '.') }}</p>
                                     <p class="text-xs text-gray-400">Termasuk PPN 11%</p>
                                 </div>
                             </article>
@@ -134,21 +134,21 @@
                     <dl class="space-y-2 text-sm text-gray-600">
                         <div class="flex justify-between">
                             <dt>Subtotal</dt>
-                            <dd>Rp{{ number_format($transaction['payment']['subtotal'], 0, ',', '.') }}</dd>
+                            <dd>Rp {{ number_format($transaction['payment']['subtotal'], 0, ',', '.') }}</dd>
                         </div>
                         <div class="flex justify-between">
                             <dt>Ongkir</dt>
-                            <dd>Rp{{ number_format($transaction['payment']['shipping'], 0, ',', '.') }}</dd>
+                            <dd>Rp {{ number_format($transaction['payment']['shipping'], 0, ',', '.') }}</dd>
                         </div>
                         <div class="flex justify-between">
                             <dt>Diskon</dt>
-                            <dd>- Rp{{ number_format($transaction['payment']['discount'], 0, ',', '.') }}</dd>
+                            <dd>- Rp {{ number_format($transaction['payment']['discount'], 0, ',', '.') }}</dd>
                         </div>
                     </dl>
                     <hr class="my-4">
                     <div class="flex justify-between items-center text-base font-semibold text-gray-900">
                         <span>Total Akhir</span>
-                        <span class="text-orange-600">Rp{{ number_format($transaction['payment']['total'], 0, ',', '.') }}</span>
+                        <span class="text-orange-600">Rp {{ number_format($transaction['payment']['total'], 0, ',', '.') }}</span>
                     </div>
                 </section>
             </div>
@@ -178,7 +178,7 @@
 
     <div class="mt-8 flex flex-col items-center gap-3 md:hidden">
         <a
-            href="{{ route('customer.transactions') }}"
+            href="{{ route('transactions') }}"
             class="inline-flex items-center gap-2 rounded-full border border-orange-200 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50"
         >
             <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -90,16 +90,16 @@
                             </div>
                             <div class="md:col-span-2">
                                 <h3 class="text-base font-bold text-gray-800 mb-6">Ubah Biodata Diri</h3>
-                                
-                                <form id="profile-form" action="{{ route('customer.settings.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+
+                                <form id="profile-form" action="{{ route('settings.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                                     @csrf
                                     @method('PUT')
                                     <div class="grid md:grid-cols-3 gap-4 items-start">
                                         <label class="text-gray-700 text-sm font-semibold pt-2">Nama</label>
                                         <div class="md:col-span-2">
-                                            <input 
-                                                type="text" 
-                                                name="name" 
+                                            <input
+                                                type="text"
+                                                name="name"
                                                 value="{{ old('name', $user->name) }}"
                                                 class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                 required
@@ -112,9 +112,9 @@
                                     <div class="grid md:grid-cols-3 gap-4 items-start">
                                         <label class="text-gray-700 text-sm font-semibold pt-2">Tanggal Lahir</label>
                                         <div class="md:col-span-2">
-                                            <input 
-                                                type="date" 
-                                                name="birthday" 
+                                            <input
+                                                type="date"
+                                                name="birthday"
                                                 value="{{ $birthdayValue }}"
                                                 class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                             >
@@ -147,9 +147,9 @@
                                         <label class="text-gray-700 text-sm font-semibold pt-2">Email</label>
                                         <div class="md:col-span-2">
                                             <div class="flex items-center space-x-2">
-                                                <input 
-                                                    type="email" 
-                                                    name="email" 
+                                                <input
+                                                    type="email"
+                                                    name="email"
                                                     value="{{ old('email', $user->email) }}"
                                                     class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                     required
@@ -164,9 +164,9 @@
                                         <label class="text-gray-700 text-sm font-semibold pt-2">Nomor HP</label>
                                         <div class="md:col-span-2">
                                             <div class="flex items-center space-x-2">
-                                                <input 
-                                                    type="text" 
-                                                    name="phone" 
+                                                <input
+                                                    type="text"
+                                                    name="phone"
                                                     value="{{ old('phone', $user->phone) }}"
                                                     class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                                                 >
@@ -216,7 +216,7 @@
                                     class="bg-white border border-gray-200 rounded-lg p-5 relative"
                                     data-address-id="{{ $address->id }}"
                                     data-address='@json($addressPayload)'
-                                    data-update-url="{{ route('customer.addresses.update', $address) }}"
+                                    data-update-url="{{ route('addresses.update', $address) }}"
                                 >
                                     <div class="flex items-start justify-between mb-3">
                                         <div>
@@ -239,7 +239,7 @@
                                     </div>
                                     <div class="flex items-center space-x-4 text-sm">
                                         <button type="button" onclick="openEditAddressModal({{ $address->id }})" class="text-orange-600 hover:text-orange-700 font-semibold">Ubah Alamat</button>
-                                        <form action="{{ route('customer.addresses.destroy', $address) }}" method="POST" class="inline">
+                                        <form action="{{ route('addresses.destroy', $address) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-700 font-semibold" onclick="return confirm('Hapus alamat ini?')">Hapus</button>
@@ -268,7 +268,7 @@
                 </svg>
             </button>
         </div>
-        <form action="{{ route('customer.settings.password.update') }}" method="POST" class="space-y-4">
+        <form action="{{ route('settings.password.update') }}" method="POST" class="space-y-4">
             @csrf
             @method('PUT')
             <div>
@@ -312,7 +312,7 @@
                     </svg>
                 </button>
             </div>
-            <form id="address-form" action="{{ route('customer.addresses.store') }}" method="POST" class="space-y-4">
+            <form id="address-form" action="{{ route('addresses.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <div id="address-form-method-container"></div>
                 <div>
@@ -473,7 +473,7 @@
     const detailInput = document.getElementById('address-detail');
     const postcodeInput = document.getElementById('address-postcode');
     const notesInput = document.getElementById('address-notes');
-    const storeAddressUrl = '{{ route('customer.addresses.store') }}';
+    const storeAddressUrl = '{{ route('addresses.store') }}';
 
     function handleTabClick(event) {
         const target = event.currentTarget;

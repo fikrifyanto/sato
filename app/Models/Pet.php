@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pet extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'images',
         'name',
