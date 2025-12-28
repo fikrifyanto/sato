@@ -65,8 +65,8 @@ jobs:
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Pull latest image
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            docker compose -f docker-compose.dev.yml pull
+            docker compose -f docker-compose.dev.yml up -d --remove-orphans
 
             # Clear docker images
             docker image prune -f

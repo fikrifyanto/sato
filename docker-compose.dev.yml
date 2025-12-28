@@ -3,7 +3,7 @@ services:
     image: ghcr.io/fikrifyanto/sato:latest
     container_name: sato_app
     env_file:
-      - .env.production
+      - .env.development
     ports:
       - "80:8000"
     depends_on:
@@ -12,8 +12,7 @@ services:
     command: >
       sh -c "
         php artisan migrate --force &&
-        php artisan filament:assets &&
-        php artisan octane:frankenphp
+        php artisan filament:assets
       "
 
   db:
@@ -21,7 +20,7 @@ services:
     container_name: sato_db
     restart: unless-stopped
     env_file:
-      - .env.production
+      - .env.development
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
