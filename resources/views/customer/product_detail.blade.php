@@ -8,17 +8,16 @@
 
             {{-- Gambar Utama --}}
             <div class="rounded-lg overflow-hidden cursor-pointer"
-                 onclick="document.getElementById('galleryModal').classList.remove('hidden')">
-                <img src="{{ $productData['image_main'] }}" alt="{{ $productData['name'] }}"
-                     class="w-full h-96 object-cover">
+                onclick="document.getElementById('galleryModal').classList.remove('hidden')">
+                <img src="{{ $productData['image_main'] }}" alt="{{ $productData['name'] }}" class="w-full h-96 object-cover">
             </div>
 
             {{-- Thumbnails --}}
             <div class="flex gap-3 mt-4">
                 @foreach ($productData['images'] as $img)
                     <img src="{{ $img }}"
-                         class="w-20 h-20 rounded-lg object-cover border cursor-pointer hover:ring-2 hover:ring-amber-500"
-                         onclick="document.getElementById('galleryModal').classList.remove('hidden')">
+                        class="w-20 h-20 rounded-lg object-cover border cursor-pointer hover:ring-2 hover:ring-amber-500"
+                        onclick="document.getElementById('galleryModal').classList.remove('hidden')">
                 @endforeach
             </div>
 
@@ -42,9 +41,9 @@
                 </button>
                 <button class="bg-amber-600 text-white p-2 rounded-lg hover:bg-amber-700">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                         stroke="currentColor" class="size-6">
+                        stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>
+                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                     </svg>
                 </button>
             </div>
@@ -52,14 +51,15 @@
     </div>
 
     {{-- MODAL GALERI --}}
-    <div id="galleryModal"
-         class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
+    <div id="galleryModal" class="hidden fixed inset-0 bg-opacity-50 z-50 flex items-center justify-center p-4"
+        onclick="document.getElementById('galleryModal').classList.add('hidden')">
 
-        <div class="bg-white rounded-lg shadow-lg p-4 max-w-3xl w-full relative">
+        <div class="bg-white/90 backdrop-blur rounded-lg shadow-lg p-4 max-w-3xl w-full relative"
+            onclick="event.stopPropagation()">
 
             {{-- Tombol Close --}}
             <button class="absolute top-3 right-3 text-gray-500 hover:text-red-500"
-                    onclick="document.getElementById('galleryModal').classList.add('hidden')">
+                onclick="document.getElementById('galleryModal').classList.add('hidden')">
                 ✕
             </button>
 
