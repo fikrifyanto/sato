@@ -4,30 +4,30 @@ FROM dunglas/frankenphp:php8.3
 # Set working directory
 WORKDIR /app
 
-# Copy all project file
-COPY . /app
-
 # Install PHP extensions
 RUN apt update && apt install -y \
-        zip \
-        libzip-dev \
-        libicu-dev \
-        libpq-dev \
+    zip \
+    libzip-dev \
+    libicu-dev \
+    libpq-dev \
     && docker-php-ext-install \
         zip \
         intl \
         pcntl \
         pdo_pgsql \
-    && docker-php-ext-enable zip intl pcntl pdo_pgsql
+    && docker-php-ext-enable \
+        zip intl pcntl pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install dependencies
-RUN composer install
+COPY . ./app
 
-# Permissions
+RUN composer install --no-dev --optimize-autoloader
+
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Expose port
 EXPOSE 8000
+
+CMD ["frankenphp", "run", "--config", "/Caddyfile"]
