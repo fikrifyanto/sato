@@ -50,7 +50,7 @@
                 }
             @endphp
             <div class="bg-white rounded-lg shadow-sm mb-6">
-                <div class="flex border-b overflow-x-auto">
+                <div class="flex border-b border-gray-200 overflow-x-auto">
                     <button class="tab-button active px-5 py-3 text-sm font-semibold text-orange-500 border-b-2 border-orange-500 whitespace-nowrap" data-tab="biodata">
                         Biodata Diri
                     </button>
@@ -101,7 +101,7 @@
                                                 type="text"
                                                 name="name"
                                                 value="{{ old('name', $user->name) }}"
-                                                class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                                                class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"
                                                 required
                                             >
                                             @error('name')
@@ -116,7 +116,7 @@
                                                 type="date"
                                                 name="birthday"
                                                 value="{{ $birthdayValue }}"
-                                                class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                                                class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"
                                             >
                                             @error('birthday')
                                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -141,7 +141,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <hr class="my-5">
+                                    <hr class="my-5 border-gray-200">
                                     <h4 class="text-base font-bold text-gray-800 mb-4">Ubah Kontak</h4>
                                     <div class="grid md:grid-cols-3 gap-4 items-start">
                                         <label class="text-gray-700 text-sm font-semibold pt-2">Email</label>
@@ -151,7 +151,7 @@
                                                     type="email"
                                                     name="email"
                                                     value="{{ old('email', $user->email) }}"
-                                                    class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                                                    class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"
                                                     required
                                                 >
                                             </div>
@@ -168,7 +168,7 @@
                                                     type="text"
                                                     name="phone"
                                                     value="{{ old('phone', $user->phone) }}"
-                                                    class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                                                    class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"
                                                 >
                                             </div>
                                             @error('phone')
@@ -176,7 +176,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <hr class="my-5">
+                                    <hr class="my-5 border-gray-200">
                                     <div class="flex justify-end space-x-3 pt-4">
                                         <button type="button" class="px-5 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
                                             Batal
@@ -294,7 +294,7 @@
                 @enderror
             </div>
             <div class="flex space-x-3 pt-2">
-                <button type="button" onclick="document.getElementById('password-modal').classList.add('hidden')" class="flex-1 px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">Batal</button>
+                <button type="button" onclick="document.getElementById('password-modal').classList.add('hidden')" class="flex-1 px-4 py-2 text-sm outline outline-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
                 <button type="submit" class="flex-1 px-4 py-2 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold">Simpan</button>
             </div>
         </form>
@@ -317,7 +317,7 @@
                 <div id="address-form-method-container"></div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Jenis Alamat <span class="text-red-500">*</span></label>
-                    <select name="type" id="address-type" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                    <select name="type" id="address-type" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6" required>
                         <option value="">Pilih Jenis Alamat</option>
                         @foreach($addressTypes as $typeValue => $typeName)
                             <option value="{{ $typeValue }}">{{ $typeName }}</option>
@@ -326,22 +326,22 @@
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Label Alamat</label>
-                    <input type="text" name="label" id="address-label" placeholder="Contoh: Rumah, Kantor" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none">
+                    <input type="text" name="label" id="address-label" placeholder="Contoh: Rumah, Kantor" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Detail Alamat</label>
-                    <textarea name="detail" id="address-detail" rows="3" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
+                    <textarea name="detail" id="address-detail" rows="3" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"></textarea>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Provinsi <span class="text-red-500">*</span></label>
-                        <select name="province" id="address-province" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <select name="province" id="address-province" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6" required>
                             <option value="">Pilih Provinsi</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Kota/Kabupaten <span class="text-red-500">*</span></label>
-                        <select name="city" id="address-city" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <select name="city" id="address-city" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6" required>
                             <option value="">Pilih Kota</option>
                         </select>
                     </div>
@@ -349,21 +349,21 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Kecamatan <span class="text-red-500">*</span></label>
-                        <select name="district" id="address-district" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <select name="district" id="address-district" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6" required>
                             <option value="">Pilih Kecamatan</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-gray-700 text-sm font-semibold mb-2">Kode Pos <span class="text-red-500">*</span></label>
-                        <input type="text" name="postcode" id="address-postcode" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none" required>
+                        <input type="text" name="postcode" id="address-postcode" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6" required>
                     </div>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Catatan</label>
-                    <textarea name="notes" id="address-notes" rows="2" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none"></textarea>
+                    <textarea name="notes" id="address-notes" rows="2" class="w-full rounded-md bg-white px-3 py-1.5 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6"></textarea>
                 </div>
                 <div class="flex space-x-3 pt-2">
-                    <button type="button" onclick="closeAddressModal()" class="flex-1 px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">Batal</button>
+                    <button type="button" onclick="closeAddressModal()" class="flex-1 px-4 py-2 text-sm outline outline-gray-300 rounded-lg hover:bg-gray-50">Batal</button>
                     <button type="submit" class="flex-1 px-4 py-2 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold">Simpan</button>
                 </div>
             </form>

@@ -26,7 +26,7 @@
                 <form action="#" method="GET" class="w-full max-w-md">
                     <div class="relative">
                         <input type="text" name="q" placeholder="Search"
-                               class="w-full rounded-md bg-white px-3 py-2.5 pl-10 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
+                               class="w-full rounded-md bg-white px-3 py-1.5 pl-10 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                              stroke="currentColor"
@@ -39,7 +39,7 @@
             </div>
 
             <div class="flex items-center space-x-3 md:space-x-6 text-gray-600">
-                <a>
+                <a href="{{ route('orders.index')  }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                          stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -47,25 +47,21 @@
                     </svg>
                 </a>
 
-                <a href="{{ route('carts') }}" class="relative">
+                <a href="{{ route('carts.index') }}" class="relative">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                          stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>
                     </svg>
 
-                    @php
-                        $cartQty = session('cart_qty', 0); // Default 0 kalau belum ada
-                    @endphp
-
-                    @if ($cartQty > 0)
+                    @if ($cartItems->count() > 0)
                         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5">
-                                {{ $cartQty }}
+                                {{ $cartItems->count() }}
                             </span>
                     @endif
                 </a>
 
-                <a href="{{ route('settings') }}">
+                <a href="{{ route('settings')  }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"

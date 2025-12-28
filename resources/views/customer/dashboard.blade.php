@@ -134,7 +134,7 @@
                         <p class="text-base font-semibold text-orange-600 mt-1">
                             Rp {{ number_format($pet->price ?? 0, 0, ',', '.') }}
                         </p>
-                        <button class="py-2 px-4 shadow-sm rounded-md bg-primary text-sm text-white w-full mt-4">
+                        <button type="button" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary mt-3">
                             Adopsi
                         </button>
                     </div>
@@ -176,7 +176,7 @@
                             Rp {{ number_format($product->price ?? 0, 0, ',', '.') }}
                         </p>
                         <p class="text-xs text-gray-500 mt-1">{{ $product->category ?? 'Aksesoris' }}</p>
-                        <button class="py-2 px-4 shadow-sm rounded-md bg-primary text-sm text-white w-full mt-4">
+                        <button class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary mt-3">
                             Beli
                         </button>
                     </div>
