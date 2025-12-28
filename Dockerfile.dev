@@ -1,5 +1,5 @@
 # User FrankenPHP image
-FROM dunglas/frankenphp:php8.3
+FROM php:8.3-fpm
 
 # Set working directory
 WORKDIR /app
@@ -28,4 +28,4 @@ RUN composer install --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 8000
+EXPOSE 9000
