@@ -1,6 +1,8 @@
 services:
   app:
-    image: ghcr.io/fikrifyanto/sato:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: sato_app
     env_file:
       - .env.development
@@ -13,6 +15,7 @@ services:
       sh -c "
         php artisan migrate --force &&
         php artisan filament:assets
+        frankenphp run --config /app/Caddyfile
       "
 
   db:
