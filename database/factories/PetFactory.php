@@ -17,22 +17,22 @@ class PetFactory extends Factory
      */
     public function definition(): array
     {
-        $species = fake()->randomElement(['Anjing', 'Kucing']);
+        $species = $this->faker->randomElement(['Anjing', 'Kucing']);
 
         return [
             'images' => [],
-            'name' => fake()->firstName(),
+            'name' => $this->faker->firstName(),
             'species' => $species,
             'breed' => $species === 'Anjing'
-                ? fake()->randomElement(['Golden Retriever', 'Bulldog', 'Poodle'])
-                : fake()->randomElement(['Persian', 'Maine Coon', 'Siamese']),
-            'age' => fake()->numberBetween(1, 15),
-            'gender' => fake()->randomElement(['male', 'female']),
-            'color' => fake()->safeColorName(),
-            'weight' => fake()->randomFloat(1, 1.5, 40),
-            'description' => fake()->sentence(12),
-            'status' => fake()->randomElement(['available', 'adopted']),
-            'vaccinated' => fake()->boolean(),
+                ? $this->faker->randomElement(['Golden Retriever', 'Bulldog', 'Poodle'])
+                : $this->faker->randomElement(['Persian', 'Maine Coon', 'Siamese']),
+            'age' => $this->faker->numberBetween(1, 15),
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'color' => $this->faker->safeColorName(),
+            'weight' => $this->faker->randomFloat(1, 1.5, 40),
+            'description' => $this->faker->sentence(12),
+            'status' => $this->faker->randomElement(['available', 'adopted']),
+            'vaccinated' => $this->faker->boolean(),
         ];
     }
 }
