@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    image: ghcr.io/fikrifyanto/sato:latest
     container_name: sato_app
     env_file:
       - .env.development
