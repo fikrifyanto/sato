@@ -26,7 +26,7 @@
                 <form action="#" method="GET" class="w-full max-w-md">
                     <div class="relative">
                         <input type="text" name="q" placeholder="Search"
-                               class="w-full rounded-md bg-white px-3 py-2.5 pl-10 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
+                               class="w-full rounded-md bg-white px-3 py-1.5 pl-10 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                              stroke="currentColor"

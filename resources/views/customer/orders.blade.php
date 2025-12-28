@@ -32,38 +32,6 @@
 
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
             <form method="GET" action="{{ route('orders.index') }}" class="px-6 py-6 space-y-5">
-                <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_220px]">
-                    <label class="flex flex-col gap-2">
-                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Cari transaksi</span>
-                        <div class="relative">
-                            <input type="text" name="q" placeholder="Search"
-                                   class="w-full rounded-md bg-white px-3 py-2.5 pl-10 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                 stroke="currentColor"
-                                 class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
-                            </svg>
-                        </div>
-                    </label>
-
-                    <label class="flex flex-col gap-2">
-                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Produk</span>
-                        <select
-                            name="product"
-                            class="rounded-2xl border border-transparent bg-gray-50 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 py-2 px-3 text-sm text-gray-700"
-                        >
-                            <option value="">Semua Jenis</option>
-                            <option value="product" {{ request('product') === 'product' ? 'selected' : '' }}>Produk
-                            </option>
-                            <option value="adoption" {{ request('product') === 'adoption' ? 'selected' : '' }}>
-                                Adoption
-                            </option>
-                        </select>
-                    </label>
-                </div>
-
                 <div class="flex flex-wrap items-center gap-2">
                     @foreach($statusFilters as $statusKey => $statusLabel)
                         @php

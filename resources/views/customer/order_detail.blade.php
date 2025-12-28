@@ -144,6 +144,17 @@
                     </div>
                 </aside>
             </div>
+            <div class="flex justify-end gap-2 p-4">
+                <button onclick="pay()"
+                        class="flex justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-red-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+                    Batalkan
+                </button>
+
+                <button onclick="pay()"
+                        class="flex justify-center rounded-md bg-primary px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                    Bayar
+                </button>
+            </div>
         </div>
 
         <div class="mt-8 flex flex-col items-center gap-3 md:hidden">
@@ -159,4 +170,23 @@
             </a>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script
+        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+
+    <script>
+        @if($order->status == OrderStatus::Pending)
+        function pay() {
+            snap.pay('{{$order->lastOrderPayment->token}}')
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            pay()
+        });
+        @endif
+    </script>
 @endsection
