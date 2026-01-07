@@ -52,6 +52,7 @@ class OrdersTable
                 //
             ])
             ->recordActions([
+                EditAction::make(),
                 ViewAction::make(),
             ]);
     }
