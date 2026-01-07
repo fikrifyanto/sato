@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\Orders\Pages;
 
 use App\Filament\Resources\Orders\OrderResource;
-use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Actions\EditAction;
+use Filament\Resources\Pages\ViewRecord;
 
-class ListOrders extends ListRecords
+class ViewOrder extends ViewRecord
 {
     protected static string $resource = OrderResource::class;
 }

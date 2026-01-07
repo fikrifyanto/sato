@@ -31,7 +31,7 @@ class ProductForm
                             ->required()
                             ->numeric(),
                         TextInput::make('category'),
-                        FileUpload::make('image')
+                        FileUpload::make('images')
                             ->image()
                             ->columnSpanFull()
                             ->openable()
